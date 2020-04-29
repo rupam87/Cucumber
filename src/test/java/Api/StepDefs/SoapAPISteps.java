@@ -62,7 +62,7 @@ public class SoapAPISteps implements En {
 			String xmlFromResponse = EntityUtils.toString(this.scenarioContext.GetSoapResponse().getEntity());
 			XmlHelper xhelper = new XmlHelper();
 			Document xRespDoc = xhelper.GetXDocument(xmlFromResponse);
-			String actualVal = xhelper.FindNodeValue(xRespDoc,
+			String actualVal = xhelper.GetNodeValue(xRespDoc,
 					"/ns:soap:Envelope/ns:soap:Body/ns:tem:AddResponse/ns:tem:" + field + "/text()");
 			assertThat(actualVal).isEqualTo(value);
 			xhelper.dispose();

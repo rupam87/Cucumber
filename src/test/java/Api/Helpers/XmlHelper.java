@@ -26,9 +26,40 @@ public class XmlHelper {
 	Transformer transformer = null;
 
 	/*
+	 * Gets org.w3c.dom.Document object for the XML file. Creates a new one if
+	 * there is none existing already
+	 */
+	public Document GetXDocument(File xmlFile) throws Exception {
+		if (xDom == null) {
+			dFactory = DocumentBuilderFactory.newInstance();
+			dFactory.setNamespaceAware(true);
+			DocumentBuilder dBuilder = dFactory.newDocumentBuilder();
+			xDom = dBuilder.parse(xmlFile);
+			xDom.getDocumentElement().normalize();
+		}
+		return xDom;
+	}
+
+	/*
+	 * Gets org.w3c.dom.Document object for the XML file contents. Creates a new
+	 * one if there is none existing already
+	 */
+	public Document GetXDocument(String xmlFileContents) throws Exception {
+		if (xDom == null) {
+			dFactory = DocumentBuilderFactory.newInstance();
+			dFactory.setNamespaceAware(true);
+			DocumentBuilder dBuilder = dFactory.newDocumentBuilder();
+			InputSource is = new InputSource( new StringReader(xmlFileContents));
+			xDom = dBuilder.parse(is);
+			xDom.getDocumentElement().normalize();
+		}
+		return xDom;
+	}
+
+	/*
 	 * 
 	 */
-	public String FindNodeValue(Document xDom, String xpathForNodeToFind) throws Exception {
+	public String GetNodeValue(Document xDom, String xpathForNodeToFind) throws Exception {
 		String value = "";
 		System.out.println("xpath for node to find: " + xpathForNodeToFind);
 		XPathExpression expr = CreateXExpr(xpathForNodeToFind);
@@ -78,37 +109,7 @@ public class XmlHelper {
 		transformer = null;
 	}
 
-	/*
-	 * Gets org.w3c.dom.Document object for the XML file. Creates a new one if
-	 * there is none existing already
-	 */
-	public Document GetXDocument(File xmlFile) throws Exception {
-		if (xDom == null) {
-			dFactory = DocumentBuilderFactory.newInstance();
-			dFactory.setNamespaceAware(true);
-			DocumentBuilder dBuilder = dFactory.newDocumentBuilder();
-			xDom = dBuilder.parse(xmlFile);
-			xDom.getDocumentElement().normalize();
-		}
-		return xDom;
-	}
-
-	/*
-	 * Gets org.w3c.dom.Document object for the XML file contents. Creates a new
-	 * one if there is none existing already
-	 */
-	public Document GetXDocument(String xmlFileContents) throws Exception {
-		if (xDom == null) {
-			dFactory = DocumentBuilderFactory.newInstance();
-			dFactory.setNamespaceAware(true);
-			DocumentBuilder dBuilder = dFactory.newDocumentBuilder();
-			InputSource is = new InputSource( new StringReader(xmlFileContents));
-			xDom = dBuilder.parse(is);
-			xDom.getDocumentElement().normalize();
-		}
-		return xDom;
-	}
-
+	
 	/*
 	 * Private method to create Xpath Expression from the string Xpath
 	 */
