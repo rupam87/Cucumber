@@ -134,6 +134,7 @@ public class XmlHelper {
 	 */
 	private static class MyNamespaceContext implements NamespaceContext {
 
+		@Override
 		public String getNamespaceURI(String prefix) {
 			if ("ns:soapenv".equals(prefix)) {
 				return "http://schemas.xmlsoap.org/soap/envelope/";
