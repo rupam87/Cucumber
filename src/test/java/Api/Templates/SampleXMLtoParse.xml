@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Envelope>
+   <Header>
+		<Info>Info1</Info>
+		<Info>Info2</Info>
+		<Info>Info3</Info>
+   </Header>
+   <Body>
+      <Add tag="addition">
+         <int>23</int>	 
+         <int>56</int>
+		 <result>79</result>
+      </Add>
+	  <Add tag="addition">
+         <int>33</int>	 
+         <int>46</int>
+		 <result>79</result>
+      </Add>
+	  <Minus tag="minus">
+		<int>23</int>	 
+        <int>56</int>
+		<result>33</result>
+	  </Minus>
+	  <Divide>
+		<int>46</int>	 
+        <int>23</int>
+		<result>2</result>
+	  </Divide>
+   </Body>
+</Envelope>

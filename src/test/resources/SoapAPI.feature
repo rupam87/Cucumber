@@ -11,3 +11,10 @@ Scenario Outline: Add Numbers using Calculator
 	Examples: 
 		|itemA|itemB|
 		|23   |22   |     
+		
+
+@xmlparse
+Scenario: Parse and read XML values
+Given I read the Xml file "SampleXMLtoParse.xml"
+And I select for nodes with filterxpath = "//*[@tag]//text()" to verify "23,56,79,33" are present
+And I select for nodes with filterxpath = "//*[@tag]//result/text()" to verify "79,79,33" are present

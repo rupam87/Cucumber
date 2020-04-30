@@ -2,6 +2,10 @@ package Api.StepDefs;
 
 import java.io.File;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import io.cucumber.java8.En;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -19,7 +23,8 @@ import static org.assertj.core.api.Assertions.*;
 
 public class SoapAPISteps implements En {
 	DIContext scenarioContext;
-
+	XmlHelper xhelper;
+	
 	public SoapAPISteps(DIContext context) {
 
 		this.scenarioContext = context;
@@ -29,8 +34,8 @@ public class SoapAPISteps implements En {
 
 					File xmlFile = new File(
 							System.getProperty("user.dir") + "//src//test//java//Api//Templates//" + fileName);
-					XmlHelper xhelper = new XmlHelper();
-					Document xdoc = xhelper.GetXDocument(xmlFile);
+					xhelper = new XmlHelper();
+					Document xdoc = xhelper.CreateXDocument(xmlFile);
 					xhelper.SetNodeValue(xdoc, "/ns:soapenv:Envelope/ns:soapenv:Body/ns:tem:Add/ns:tem:intA/text()",
 							itmAVal);
 					xhelper.SetNodeValue(xdoc, "/ns:soapenv:Envelope/ns:soapenv:Body/ns:tem:Add/ns:tem:intB/text()",
@@ -39,6 +44,20 @@ public class SoapAPISteps implements En {
 					this.scenarioContext.SetXmlRequest(xmlContent);
 					xhelper.dispose();
 				});
+		
+		Given("I read the Xml file {string}", (String fileName) -> {
+			File xmlFile = new File(
+					System.getProperty("user.dir") + "//src//test//java//Api//Templates//" + fileName);
+			xhelper = new XmlHelper();
+			xhelper.CreateXDocument(xmlFile);
+		});
+
+		Given("I select for nodes with filterxpath = {string} to verify {string} are present", (String queryXpath, String values) -> {
+		    
+			List<String> valuesToVerify = Arrays.stream(values.split(",")).collect(Collectors.toList());
+			List<String> valuesReceived = xhelper.GetNodeValues(xhelper.GetXDocument(), queryXpath);
+		    assertThat(valuesReceived).containsAll(valuesToVerify);
+		});
 
 		Given("I invoke SOAP call {string} on {string}", (String method, String url) -> {
 
@@ -60,10 +79,10 @@ public class SoapAPISteps implements En {
 		Then("I verify in Soap response {string}={string}", (String field, String value) -> {
 
 			String xmlFromResponse = EntityUtils.toString(this.scenarioContext.GetSoapResponse().getEntity());
-			XmlHelper xhelper = new XmlHelper();
-			Document xRespDoc = xhelper.GetXDocument(xmlFromResponse);
-			String actualVal = xhelper.GetNodeValue(xRespDoc,
-					"/ns:soap:Envelope/ns:soap:Body/ns:tem:AddResponse/ns:tem:" + field + "/text()");
+			xhelper = new XmlHelper();
+			Document xRespDoc = xhelper.CreateXDocument(xmlFromResponse);
+			String actualVal = xhelper.GetNodeValues(xRespDoc,
+					"/ns:soap:Envelope/ns:soap:Body/ns:tem:AddResponse/ns:tem:" + field + "/text()").get(0);
 			assertThat(actualVal).isEqualTo(value);
 			xhelper.dispose();
 		});

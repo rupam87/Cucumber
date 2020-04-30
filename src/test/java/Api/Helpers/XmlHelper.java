@@ -3,7 +3,9 @@ package Api.Helpers;
 import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.*;
@@ -29,7 +31,7 @@ public class XmlHelper {
 	 * Gets org.w3c.dom.Document object for the XML file. Creates a new one if
 	 * there is none existing already
 	 */
-	public Document GetXDocument(File xmlFile) throws Exception {
+	public Document CreateXDocument(File xmlFile) throws Exception {
 		if (xDom == null) {
 			dFactory = DocumentBuilderFactory.newInstance();
 			dFactory.setNamespaceAware(true);
@@ -44,7 +46,7 @@ public class XmlHelper {
 	 * Gets org.w3c.dom.Document object for the XML file contents. Creates a new
 	 * one if there is none existing already
 	 */
-	public Document GetXDocument(String xmlFileContents) throws Exception {
+	public Document CreateXDocument(String xmlFileContents) throws Exception {
 		if (xDom == null) {
 			dFactory = DocumentBuilderFactory.newInstance();
 			dFactory.setNamespaceAware(true);
@@ -55,12 +57,16 @@ public class XmlHelper {
 		}
 		return xDom;
 	}
+	
+	public Document GetXDocument() {		
+		return xDom;
+	}
 
 	/*
 	 * 
 	 */
-	public String GetNodeValue(Document xDom, String xpathForNodeToFind) throws Exception {
-		String value = "";
+	public List<String> GetNodeValues(Document xDom, String xpathForNodeToFind) throws Exception {
+		List<String> values = new ArrayList<String>();
 		System.out.println("xpath for node to find: " + xpathForNodeToFind);
 		XPathExpression expr = CreateXExpr(xpathForNodeToFind);
 
@@ -68,10 +74,10 @@ public class XmlHelper {
 
 		for (int i = 0; i < nodes.getLength(); i++) {
 			System.out.println("Printing node txt content for finding " + nodes.item(i).getTextContent());
-			value += nodes.item(i).getTextContent();
+			values.add(nodes.item(i).getTextContent());
 		}
 
-		return value;
+		return values;
 	}
 
 	/*

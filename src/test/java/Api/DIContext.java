@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.json.JSONObject;
 
+import Api.Helpers.XmlHelper;
 import io.restassured.response.Response;
 
 public class DIContext {
@@ -71,6 +72,6 @@ public class DIContext {
 
 	public CloseableHttpResponse GetSoapResponse() {
 		return this.soapResponse;
-	}
-
+	}	
+	
 }

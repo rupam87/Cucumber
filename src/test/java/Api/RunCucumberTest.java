@@ -10,7 +10,7 @@ import io.cucumber.junit.CucumberOptions;
 		plugin = {"pretty", "html:target/cucumber"},
 		features = "src/test/resources",
 		glue = { "Api.StepDefs" },
-		tags = {"@soapapi"}
+		tags = {"@xmlparse"}
 		)
 public class RunCucumberTest {
 }
