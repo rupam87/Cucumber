@@ -1,2 +1,2 @@
 # Cucumber
-Cucumer Java project consisting of API REST and SOAP tests
+Cucumer Java project consisting of API REST and SOAP tests.

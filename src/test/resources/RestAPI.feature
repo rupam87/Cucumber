@@ -43,3 +43,7 @@ Feature: UA Demo
     Examples: 
       | Method | Url                                              | Code |
       | GET    | http://dummy.restapiexample.com/api/v1/employees |  200 |
+      
+  @gson @jackson @POJOtoJSON
+  Scenario: Convert POJOs to JSONs
+  Given I transform an array of POJO to JSON file
