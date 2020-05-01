@@ -1,11 +1,12 @@
-{ 
- "array" : [
- {
-    "name": "{name1}",
-    "id" : {id1}
- },
- {
-    "name": "{name2}",
-    "id" : {id2}
- }] 
+{
+	"array": [
+		{
+			"name": "{name1}",
+			"id": "{id1}"
+		},
+		{
+			"name": "{name2}",
+			"id": "{id2}"
+		}
+	]
 }

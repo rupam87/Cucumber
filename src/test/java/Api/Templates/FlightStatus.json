@@ -1,78 +1,78 @@
 {
-    "flight": {
-        "flightNumber": "616",
-        "departureAirport": "SFO",
-        "departureDate": "2020-01-10"
-    },
-    "flightLegs": [
-        {
-            "operationalFlightSegments": [
-                {
-                    "estimatedArrivalTime": "2020-01-10T13:16:00",
-                    "estimatedDepartureTime": "2020-01-10T07:00:00",
-                    "departureGate": "E6",
-                    "arrivalGate": "C10",
-                    "estimatedArrivalUTCTime": "2020-01-10T19:16:00",
-                    "estimatedDepartureUTCTime": "2020-01-10T15:00:00",
-                    "departureDateTime": "2020-01-10T07:00:00",
-                    "arrivalDateTime": "2020-01-10T13:18:00",
-                    "arrivalUTCDateTime": "2020-01-10T19:18:00",
-                    "departureUTCDateTime": "2020-01-10T15:00:00",
-                    "boardTime": "06:20:00",
-                    "isInternational": "False",
-                    "operatingAirline": {
-                        "iataCode": "UA"
-                    },
-                    "flightStatuses": [
-                        {
-                            "statusType": "DepartureStatus",
-                            "description": "Early",
-                            "code": "ERL"
-                        },
-                        {
-                            "statusType": "ArrivalStatus",
-                            "description": "Delayed",
-                            "code": "DLY"
-                        },
-                        {
-                            "statusType": "LegStatus",
-                            "description": "Arrived at Gate",
-                            "code": "IN"
-                        },
-                        {
-                            "statusType": "FlightStatus",
-                            "description": "Arrived Gate 3 Minutes Late",
-                            "code": "ArrivedGateLate"
-                        },
-                        {
-                            "statusType": "ShortFlightStatus",
-                            "description": "Arrived Gate 3 Minutes Late",
-                            "code": "ArrivedGateLate"
-                        }
-                    ],
-                    "departureAirport": {
-                        "iataCode": "SFO",
-                        "name": "San Francisco, CA, US (SFO)",
-                        "shortName": "SAN FRANCISCO INTL"
-                    },
-                    "arrivalAirport": {
-                        "iataCode": "ORD",
-                        "name": "Chicago, IL, US (ORD)",
-                        "shortName": "CHICAGO O`HARE INTL"
-                    }
-                }
-            ],
-            "scheduledFlightSegments": [
-                {
-                    "departureDateTime": "2020-01-10T07:00:00",
-                    "arrivalDateTime": "2020-01-10T13:18:00",
-                    "arrivalUTCDateTime": "2020-01-10T19:18:00",
-                    "departureUTCDateTime": "2020-01-10T15:00:00",
-                    "segmentNumber": 1
-                }
-            ]
-        }
-    ],
-    "dataSource": "uflifo_cache",
-    "errors": null
+	"flight": {
+		"flightNumber": "616",
+		"departureAirport": "SFO",
+		"departureDate": "2020-01-10"
+	},
+	"flightLegs": [
+		{
+			"operationalFlightSegments": [
+				{
+					"estimatedArrivalTime": "2020-01-10T13:16:00",
+					"estimatedDepartureTime": "2020-01-10T07:00:00",
+					"departureGate": "E6",
+					"arrivalGate": "C10",
+					"estimatedArrivalUTCTime": "2020-01-10T19:16:00",
+					"estimatedDepartureUTCTime": "2020-01-10T15:00:00",
+					"departureDateTime": "2020-01-10T07:00:00",
+					"arrivalDateTime": "2020-01-10T13:18:00",
+					"arrivalUTCDateTime": "2020-01-10T19:18:00",
+					"departureUTCDateTime": "2020-01-10T15:00:00",
+					"boardTime": "06:20:00",
+					"isInternational": "False",
+					"operatingAirline": {
+						"iataCode": "UA"
+					},
+					"flightStatuses": [
+						{
+							"statusType": "DepartureStatus",
+							"description": "Early",
+							"code": "ERL"
+						},
+						{
+							"statusType": "ArrivalStatus",
+							"description": "Delayed",
+							"code": "DLY"
+						},
+						{
+							"statusType": "LegStatus",
+							"description": "Arrived at Gate",
+							"code": "IN"
+						},
+						{
+							"statusType": "FlightStatus",
+							"description": "Arrived Gate 3 Minutes Late",
+							"code": "ArrivedGateLate"
+						},
+						{
+							"statusType": "ShortFlightStatus",
+							"description": "Arrived Gate 3 Minutes Late",
+							"code": "ArrivedGateLate"
+						}
+					],
+					"departureAirport": {
+						"iataCode": "SFO",
+						"name": "San Francisco, CA, US (SFO)",
+						"shortName": "SAN FRANCISCO INTL"
+					},
+					"arrivalAirport": {
+						"iataCode": "ORD",
+						"name": "Chicago, IL, US (ORD)",
+						"shortName": "CHICAGO O`HARE INTL"
+					}
+				}
+			],
+			"scheduledFlightSegments": [
+				{
+					"departureDateTime": "2020-01-10T07:00:00",
+					"arrivalDateTime": "2020-01-10T13:18:00",
+					"arrivalUTCDateTime": "2020-01-10T19:18:00",
+					"departureUTCDateTime": "2020-01-10T15:00:00",
+					"segmentNumber": 1
+				}
+			]
+		}
+	],
+	"dataSource": "uflifo_cache",
+	"errors": null
 }
