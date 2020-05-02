@@ -21,7 +21,7 @@ Runing Cucumber tests in Parallel:
 	<properties>
         <property>
             <name>dataproviderthreadcount</name>
-            <value>  user input int value to set for Thread Count <\/value>
+            <value>  user input int value to set for Thread Count </value>
         </property>
     </properties>
 	```
@@ -35,7 +35,7 @@ Default Cucumber pretty format reports
 1. Add dependency for "maven-cucumber-reporting" 
 2. Add the followinf to the Cucumber.Options -> plugins section.  "json:target/jsonReports/CucumberTestReport.json"
 3. run mvn clean test, once build succeeds, observe that the json file is created
-4. Add the following under pom.xml plugin section :
+4. Add the following under pom.xml plugin section
 		``` xml
 		<plugin>
       		<groupId>net.masterthought</groupId>
