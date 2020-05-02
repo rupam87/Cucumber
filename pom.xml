@@ -22,8 +22,43 @@
                 <target>1.8</target>
             </configuration>
         </plugin>
+        <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-surefire-plugin</artifactId>
+	        <version>2.12.4</version>
+	        <configuration>
+	           <suiteXmlFiles>
+	            	<suiteXmlFile> testng.xml </suiteXmlFile> 
+	           </suiteXmlFiles>  
+	           <testFailureIgnore>true</testFailureIgnore>  
+	        </configuration>
+      	</plugin>
+      	<plugin>
+      		<groupId>net.masterthought</groupId>
+		    <artifactId>maven-cucumber-reporting</artifactId>
+		    <version>5.0.0</version>
+		    <executions>
+		    	<execution>
+		    		<id>execution</id>
+		    		<phase>verify</phase>
+		    		<goals>
+		    			<goal>generate</goal>
+		    		</goals>
+		    		<configuration>
+		    			<projectName>APITestProject</projectName>
+		    			<inputDirectory>${project.build.directory}/jsonReports</inputDirectory>
+		    				<jsonFiles>
+                                <!-- supports wildcard or name pattern -->
+                                <param>**/*.json</param>
+                            </jsonFiles>
+		    			<outputDirectory>${project.build.directory}/cucumber-reports</outputDirectory>
+		    			<cucumberOutput>${project.build.directory}/jsonReports/CucumberTestReport.json</cucumberOutput>		    			
+		    		</configuration>
+		    	</execution>
+		    </executions>
+      	</plugin>
     </plugins>
-</build>
+ </build>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -38,82 +73,81 @@
       <version>4.13</version>
       <scope>test</scope>
     </dependency> 
-	<!-- https://mvnrepository.com/artifact/org.json/json -->
+	
 	<dependency>
 	    <groupId>org.json</groupId>
 	    <artifactId>json</artifactId>
 	    <version>20190722</version>
 	</dependency>	   
-	<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-junit -->
+	
 	<dependency>
 	    <groupId>io.cucumber</groupId>
 	    <artifactId>cucumber-junit</artifactId>
 	    <version>4.8.1</version>
 	    <scope>test</scope>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-java8 -->
+	
 	<dependency>
 	    <groupId>io.cucumber</groupId>
 	    <artifactId>cucumber-java8</artifactId>
 	    <version>4.8.1</version>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
+	
 	<dependency>
 	    <groupId>io.cucumber</groupId>
 	    <artifactId>cucumber-java</artifactId>
 	    <version>4.8.1</version>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-picocontainer -->
+	
 	<dependency>
 	    <groupId>io.cucumber</groupId>
 	    <artifactId>cucumber-picocontainer</artifactId>
 	    <version>4.8.1</version>
 	    <scope>test</scope>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-core -->
+	
 	<dependency>
 	    <groupId>io.cucumber</groupId>
 	    <artifactId>cucumber-core</artifactId>
 	    <version>4.8.1</version>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/io.cucumber/gherkin -->
+	
 	<dependency>
 	    <groupId>io.cucumber</groupId>
 	    <artifactId>gherkin</artifactId>
 	    <version>5.1.0</version>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-jvm -->
+	
 	<dependency>
 	    <groupId>io.cucumber</groupId>
 	    <artifactId>cucumber-jvm</artifactId>
 	    <version>4.8.1</version>
 	    <type>pom</type>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/io.cucumber/tag-expressions -->
+	
 	<dependency>
 	    <groupId>io.cucumber</groupId>
 	    <artifactId>tag-expressions</artifactId>
 	    <version>1.1.1</version>
 	</dependency>
-		<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-expressions -->
+		
 	<dependency>
 	    <groupId>io.cucumber</groupId>
 	    <artifactId>cucumber-expressions</artifactId>
 	    <version>7.0.2</version>
 	</dependency>
-		<!-- https://mvnrepository.com/artifact/io.cucumber/datatable -->
+	
 	<dependency>
 	    <groupId>io.cucumber</groupId>
 	    <artifactId>datatable</artifactId>
 	    <version>1.1.14</version>
 	</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apiguardian/apiguardian-api -->
+		
 	<dependency>
 	    <groupId>org.apiguardian</groupId>
 	    <artifactId>apiguardian-api</artifactId>
 	    <version>1.1.0</version>
-	</dependency>	
-		
+	</dependency>			
 
 	<dependency>
       <groupId>io.rest-assured</groupId>
@@ -121,51 +155,70 @@
       <version>4.2.0</version>
       <scope>test</scope>
 	</dependency>
+	
 	<dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>xml-path</artifactId>
       <version>4.2.0</version>
       <scope>test</scope>
 	</dependency>
+	
 	<dependency>
-	      <groupId>io.rest-assured</groupId>
-	      <artifactId>rest-assured</artifactId>
-	      <version>4.2.0</version>
-	      <scope>test</scope>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>4.2.0</version>
+      <scope>test</scope>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+	
 	<dependency>
 	    <groupId>com.fasterxml.jackson.core</groupId>
 	    <artifactId>jackson-databind</artifactId>
 	    <version>2.10.2</version>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+	
 	<dependency>
 	    <groupId>com.google.code.gson</groupId>
 	    <artifactId>gson</artifactId>
 	    <version>2.8.6</version>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
+	
 	<dependency>
 	    <groupId>org.assertj</groupId>
 	    <artifactId>assertj-core</artifactId>
 	    <version>3.15.0</version>
 	    <scope>test</scope>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+	
 	<dependency>
 	    <groupId>org.apache.httpcomponents</groupId>
 	    <artifactId>httpclient</artifactId>
 	    <version>4.5.12</version>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
-<dependency>
-    <groupId>org.apache.commons</groupId>
-    <artifactId>commons-text</artifactId>
-    <version>1.8</version>
-</dependency>
+	
+	<dependency>
+	    <groupId>org.apache.commons</groupId>
+	    <artifactId>commons-text</artifactId>
+	    <version>1.8</version>
+	</dependency>
 
+	<dependency>
+	    <groupId>org.testng</groupId>
+	    <artifactId>testng</artifactId>
+	    <version>7.1.0</version>
+	    <scope>test</scope>
+	</dependency>
+
+	<dependency>
+	    <groupId>io.cucumber</groupId>
+	    <artifactId>cucumber-testng</artifactId>
+	    <version>4.8.1</version>
+	</dependency>	
 	
-	
+	<dependency>
+	    <groupId>net.masterthought</groupId>
+	    <artifactId>maven-cucumber-reporting</artifactId>
+	    <version>5.0.0</version>
+	</dependency>
+		
   </dependencies>
 </project>

@@ -1,7 +1,7 @@
 Feature: SoapAPI 
 
 
-@soapapi 
+@soapapi @calcapi
 Scenario Outline: Add Numbers using Calculator 
 	Given I read the Xml file "CalculatorAdd.xml", modify "<itemA>" and "<itemB>" 
 	And I invoke SOAP call "POST" on "http://www.dneonline.com/calculator.asmx" 
@@ -13,7 +13,7 @@ Scenario Outline: Add Numbers using Calculator
 		|23   |22   |     
 		
 
-@xmlparse
+@xmlparse @soapapi 
 Scenario: Parse and read XML values
 Given I read the Xml file "SampleXMLtoParse.xml"
 And I select for nodes with filterxpath = "//*[@tag]//text()" to verify "23,56,79,33" are present

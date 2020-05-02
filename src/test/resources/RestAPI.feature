@@ -1,6 +1,6 @@
 Feature: UA Demo
 
-  @pico
+  @pico @restapi
   Scenario: Using PICO
     Given I store fake creds in context
     When I read and parse the Json file "FlightStatus.json"
@@ -34,7 +34,7 @@ Feature: UA Demo
       | CreateUsers.json | FirstUser2 | Leader2 |
       | CreateUsers.json | FirstUser3 | Leader3 |
 
-  @restassured
+  @restassured @restapi
   Scenario Outline: Using RestAssured
     Given I invoke REST call "<Method>" on "<Url>"
     Then I verify ResponseCode="<Code>"
@@ -44,6 +44,6 @@ Feature: UA Demo
       | Method | Url                                              | Code |
       | GET    | http://dummy.restapiexample.com/api/v1/employees |  200 |
       
-  @gson @jackson @POJOtoJSON
+  @gson @jackson @POJOtoJSON @restapi
   Scenario: Convert POJOs to JSONs
   Given I transform an array of POJO to JSON file
