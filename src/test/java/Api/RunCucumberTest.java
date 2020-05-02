@@ -24,7 +24,7 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 	}
 
 	@Override
-	@Test(groups = "restapi", description = "Runs Cucumber restapi Scenarios", dataProvider = "scenarios")
+	@Test(groups = "", description = "Runs Cucumber Scenarios", dataProvider = "scenarios")
 	public void runScenario(PickleEventWrapper pickleWrapper, CucumberFeatureWrapper featureWrapper) throws Throwable {
 		super.runScenario(pickleWrapper, featureWrapper);
 	}

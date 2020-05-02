@@ -1,3 +1,4 @@
+@API @SoapApi
 Feature: SoapAPI 
 
 

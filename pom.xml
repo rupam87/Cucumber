@@ -31,6 +31,12 @@
 	            	<suiteXmlFile> testng.xml </suiteXmlFile> 
 	           </suiteXmlFiles>  
 	           <testFailureIgnore>true</testFailureIgnore>  
+	           <properties>
+			        <property>
+			            <name>dataproviderthreadcount</name>
+			            <value>4</value>
+			        </property>
+		    </properties>
 	        </configuration>
       	</plugin>
       	<plugin>
