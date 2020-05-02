@@ -47,7 +47,7 @@ Default Cucumber pretty format reports
 		    		<phase>verify</phase>
 		    		<goals>
 		    			<goal>generate</goal>
-		    		<\goals>
+		    		</goals>
 		    		<configuration>
 		    			<projectName>APITestProject</projectName>
 		    			<inputDirectory>${project.build.directory}/jsonReports</inputDirectory>
