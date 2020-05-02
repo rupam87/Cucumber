@@ -5,7 +5,9 @@ import java.util.HashMap;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.json.JSONObject;
 
-import Api.Helpers.XmlHelper;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+
 import io.restassured.response.Response;
 
 public class DIContext {
@@ -16,7 +18,7 @@ public class DIContext {
 	private JSONObject jobj;
 	private String xmlRequest;
 	CloseableHttpResponse soapResponse;
-
+	ExtentTest test = null;
 	Response response = null;
 
 	public DIContext() {
@@ -72,6 +74,17 @@ public class DIContext {
 
 	public CloseableHttpResponse GetSoapResponse() {
 		return this.soapResponse;
-	}	
+	}
+
+	public ExtentTest GetExtentTest(ExtentReports report, String testName) {
+		if (this.test == null) {
+			System.out.println("Extent Test is NULL, initializing!");
+			this.test = report.createTest(testName);
+		}
+		return this.test;
+	}
 	
+	public ExtentTest GetExtentTest() {		
+		return this.test;
+	}
 }

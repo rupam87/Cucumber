@@ -1,5 +1,9 @@
 package Api.StepDefs;
 
+import com.aventstack.extentreports.ExtentTest;
+
+import Api.DIContext;
+import Api.ExtentManager;
 import io.cucumber.core.api.Scenario;
 import io.cucumber.core.event.Status;
 //import org.testng.annotations.AfterMethod;
@@ -8,18 +12,24 @@ import io.cucumber.java.After;
 import io.cucumber.java.Before;
 
 public class Hooks {
+	
+	DIContext scenarioContext;
+	ExtentTest test;
+	
+	public Hooks(DIContext context)
+	{
+		this.scenarioContext = context;
+	}
 
 	@Before
 	public void beforeHooks(Scenario scenario) {
 		System.out.println("INSIDE BEFORE HOOKS NOW!! Scenario name :" + scenario.getName());
 		System.out.println("Scenario ID :" + scenario.getId());
 		scenario.getSourceTagNames().stream().forEach(name -> System.out.println("Scenario tags :" + name));
-		// scenario.write("");
-	}
-
-	@Before("@pokeapi")
-	public void beforePokeAPIHooks() {
-		System.out.println("INSIDE BEFORE HOOKS for pokeapi!!");
+		
+		this.test = this.scenarioContext.GetExtentTest(ExtentManager.ExtentReportsInstance(),scenario.getName());
+		
+		System.out.println("Extent Test Object stored in Scenario context!");
 	}
 
 	@After
@@ -36,12 +46,13 @@ public class Hooks {
 			System.out.println("Scenario FAILED");
 		else
 			System.out.println("Scenario UNDEFINED");
-		System.out.println("INSIDE AFTER HOOKS NOW!!  Scenario name: " + scenario.getName());
+		this.test.info("INSIDE AFTER HOOKS NOW!!  Scenario name: " + scenario.getName());
+		
+		if(scenario.getStatus() == Status.PASSED)
+			this.test.pass(scenario.getName());
+		else
+			this.test.fail(scenario.getName());
 	}
-
-	@After("@reqre")
-	public void afterReqreHooks() {
-		System.out.println("INSIDE AFTER HOOKS for reqre!!");
-	}
+	
 
 }

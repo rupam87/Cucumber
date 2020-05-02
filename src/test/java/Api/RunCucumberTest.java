@@ -1,10 +1,14 @@
 package Api;
 
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeSuite;
 //import org.junit.runner.RunWith;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import com.aventstack.extentreports.ExtentReports;
 
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberFeatureWrapper;
@@ -13,13 +17,22 @@ import io.cucumber.testng.CucumberOptions;
 import io.cucumber.testng.PickleEventWrapper;
 
 //@RunWith(Cucumber.class)
-@CucumberOptions(plugin = { "pretty", "html:target/cucumber","json:target/jsonReports/CucumberTestReport.json" },
-features = "src/test/resources", glue = {"Api.StepDefs" }, tags = { "@restapi" })
+@CucumberOptions(plugin = { "pretty", "html:target/cucumber",
+		"json:target/jsonReports/CucumberTestReport.json" }, features = "src/test/resources", glue = {
+				"Api.StepDefs" }, tags = { "@restapi" })
 public class RunCucumberTest extends AbstractTestNGCucumberTests {
+
+	ExtentReports eReport = null;
+
+	@BeforeSuite
+	public void CreateExtentReports() {
+		eReport = ExtentManager.ExtentReportsInstance();
+	}
 
 	@Override
 	@BeforeClass(alwaysRun = true)
 	public void setUpClass() {
+
 		super.setUpClass();
 	}
 
@@ -39,6 +52,11 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 	@AfterClass(alwaysRun = true)
 	public void tearDownClass() {
 		super.tearDownClass();
+	}
+
+	@AfterSuite
+	public void FlushExtentReports() {
+		eReport.flush();
 	}
 
 }
