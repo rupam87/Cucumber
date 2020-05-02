@@ -17,12 +17,12 @@ Runing Cucumber tests in Parallel:
 
 1. In the Cucumber Runner class override the DataProvider method from AbstractTestNGCucumberTests to set 'parallel=true'.
 2. The default thread count is 10, to configure it, add the below Configuration in SureFire plugin in POM under plugins section
-	"<properties>
+	<properties>
         <property>
-            <name>dataproviderthreadcount</name>
-            <value>  user input int value to set for Thread Count </value>
-        </property>
-    </properties>"
+            <name>dataproviderthreadcount<\/name>
+            <value>  user input int value to set for Thread Count <\/value>
+        <\/property>
+    <\/properties>
 	
 Default Cucumber pretty format reports
 ======================================
@@ -34,29 +34,29 @@ Default Cucumber pretty format reports
 2. Add the followinf to the Cucumber.Options -> plugins section.  "json:target/jsonReports/CucumberTestReport.json"
 3. run mvn clean test, once build succeeds, observe that the json file is created
 4. Add the following under pom.xml plugin section :
-		"<plugin>
-      		<groupId>net.masterthought</groupId>
-		    <artifactId>maven-cucumber-reporting</artifactId>
-		    <version>5.0.0</version>
+		<plugin>
+      		<groupId>net.masterthought<\/groupId>
+		    <artifactId>maven-cucumber-reporting<\/artifactId>
+		    <version>5.0.0<\/version>
 		    <executions>
 		    	<execution>
-		    		<id>execution</id>
-		    		<phase>verify</phase>
+		    		<id>execution<\/id>
+		    		<phase>verify<\/phase>
 		    		<goals>
-		    			<goal>generate</goal>
-		    		</goals>
+		    			<goal>generate<\/goal>
+		    		<\/goals>
 		    		<configuration>
-		    			<projectName>APITestProject</projectName>
-		    			<inputDirectory>${project.build.directory}/jsonReports</inputDirectory>
+		    			<projectName>APITestProject<\/projectName>
+		    			<inputDirectory>${project.build.directory}/jsonReports<\/inputDirectory>
 		    				<jsonFiles>
                                 <param>**/*.json</param>
                             </jsonFiles>
-		    			<outputDirectory>${project.build.directory}/cucumber-reports</outputDirectory>
-		    			<cucumberOutput>${project.build.directory}/jsonReports/CucumberTestReport.json</cucumberOutput>		    			
-		    		</configuration>
-		    	</execution>
-		    </executions>
-      	</plugin>"
+		    			<outputDirectory>${project.build.directory}/cucumber-reports<\/outputDirectory>
+		    			<cucumberOutput>${project.build.directory}/jsonReports/CucumberTestReport.json<\/cucumberOutput>		    			
+		    		<\/configuration>
+		    	<\/execution>
+		    <\/executions>
+      	<\/plugin>
 
 5. Run mvn verify -DskipTests to kick off maven "verify" stage without running tests, this will generate the html reports at target\cucumber-reports\cucumber-html-reports
 
