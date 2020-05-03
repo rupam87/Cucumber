@@ -1,1 +1,4 @@
-/target/
+target/
+*.settings/
+APITestProject-0.0.1-SNAPSHOT/
+test-output/
