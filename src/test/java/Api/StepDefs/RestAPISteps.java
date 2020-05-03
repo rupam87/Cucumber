@@ -33,7 +33,6 @@ public class RestAPISteps implements En {
 
 	public RestAPISteps(DIContext context) {
 		this.scenarioContext = context;
-		// test = this.scenarioContext.GetExtentTest();
 
 		Given("I store fake creds in context", () -> {
 			try {
@@ -166,9 +165,7 @@ public class RestAPISteps implements En {
 				// Get FLight Status Array
 				JSONArray flightStatuses = operationalFlightSegments.getJSONObject(0).getJSONArray("flightStatuses");
 				System.out.println("Printing Pretty format:" + flightStatuses.toString(4));
-				// flightStatuses.forEach((o) ->
-				// System.out.println(o.toString()));
-
+				
 				// Use Stream to fetch the Status Type for the node whose code =
 				// ERL
 				List<JSONObject> flightStatus = StreamSupport.stream(flightStatuses.spliterator(), false)

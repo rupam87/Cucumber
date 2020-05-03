@@ -52,13 +52,13 @@
 		    		</goals>
 		    		<configuration>
 		    			<projectName>APITestProject</projectName>
-		    			<inputDirectory>${project.build.directory}/jsonReports</inputDirectory>
+		    			<inputDirectory>test-output/jsonReports</inputDirectory>
 		    				<jsonFiles>
                                 <!-- supports wildcard or name pattern -->
                                 <param>**/*.json</param>
                             </jsonFiles>
-		    			<outputDirectory>${project.build.directory}/cucumber-reports</outputDirectory>
-		    			<cucumberOutput>${project.build.directory}/jsonReports/CucumberTestReport.json</cucumberOutput>		    			
+		    			<outputDirectory>test-output/cucumber-reports</outputDirectory>
+		    			<cucumberOutput>test-output/jsonReports/CucumberTestReport.json</cucumberOutput>		    			
 		    		</configuration>
 		    	</execution>
 		    </executions>

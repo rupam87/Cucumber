@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 
 import com.aventstack.extentreports.ExtentReports;
 
+import Utils.ExtentManager;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberFeatureWrapper;
 //import io.cucumber.junit.Cucumber;
@@ -18,7 +19,7 @@ import io.cucumber.testng.PickleEventWrapper;
 
 //@RunWith(Cucumber.class)
 @CucumberOptions(plugin = { "pretty", "html:target/cucumber",
-		"json:target/jsonReports/CucumberTestReport.json" }, features = "src/test/resources", glue = {
+		"json:test-output/jsonReports/CucumberTestReport.json" }, features = "src/test/resources", glue = {
 				"Api.StepDefs" }, tags = { "@restapi" })
 public class RunCucumberTest extends AbstractTestNGCucumberTests {
 

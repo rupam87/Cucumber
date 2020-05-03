@@ -51,19 +51,19 @@ public class XmlHelper {
 			dFactory = DocumentBuilderFactory.newInstance();
 			dFactory.setNamespaceAware(true);
 			DocumentBuilder dBuilder = dFactory.newDocumentBuilder();
-			InputSource is = new InputSource( new StringReader(xmlFileContents));
+			InputSource is = new InputSource(new StringReader(xmlFileContents));
 			xDom = dBuilder.parse(is);
 			xDom.getDocumentElement().normalize();
 		}
 		return xDom;
 	}
-	
-	public Document GetXDocument() {		
+
+	public Document GetXDocument() {
 		return xDom;
 	}
 
 	/*
-	 * 
+	 * Retrieve text values from the specified Document for the Xpath provided
 	 */
 	public List<String> GetNodeValues(Document xDom, String xpathForNodeToFind) throws Exception {
 		List<String> values = new ArrayList<String>();
@@ -81,7 +81,8 @@ public class XmlHelper {
 	}
 
 	/*
-	 * Sets the value of a particular XML Node specified by Xpath in the Document
+	 * Sets the value of a particular XML Node specified by Xpath in the
+	 * Document
 	 */
 	public void SetNodeValue(Document xDom, String xpathForNode, String valueToSet) throws Exception {
 		XPathExpression expr = CreateXExpr(xpathForNode);
@@ -115,7 +116,6 @@ public class XmlHelper {
 		transformer = null;
 	}
 
-	
 	/*
 	 * Private method to create Xpath Expression from the string Xpath
 	 */

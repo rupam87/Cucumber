@@ -3,7 +3,7 @@ package Api.StepDefs;
 import com.aventstack.extentreports.ExtentTest;
 
 import Api.DIContext;
-import Api.ExtentManager;
+import Utils.ExtentManager;
 import io.cucumber.core.api.Scenario;
 import io.cucumber.core.event.Status;
 //import org.testng.annotations.AfterMethod;
