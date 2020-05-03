@@ -1,4 +1,8 @@
 target/
 *.settings/
 APITestProject-0.0.1-SNAPSHOT/
+<<<<<<< HEAD
 test-output/
+=======
+test-output/
+>>>>>>> branch 'master' of https://github.com/rupam87/Cucumber.git
