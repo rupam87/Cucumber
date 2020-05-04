@@ -74,3 +74,16 @@ Adding Extent Reports Support for parallel runs
 4. Add TestNG @AfterSuite method in Cucumber Runner class to flush Extent Report
 5. In Hooks file, inside @Before method, create the Extent Test object (i.e. per scenario we will always have a new Extent Test objec) and store it in DIContext class.
 6. Inside individual Step Definition method, retrieve the Extent Test object to log statements.
+
+
+Selenium Downloads Links
+========================
+1. IEdriver server exe - https://selenium-release.storage.googleapis.com/index.html?path=3.141/
+2. Chrome driver exe - https://chromedriver.storage.googleapis.com/index.html
+3. Firefox (geckodriver exe) - https://github.com/mozilla/geckodriver/releases
+4. Selenium-java version - https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java/3.141.59
+5. Chrome Browser version - 81 (32 bit)
+6. IE version - 11 (32 bit)
+7. Mozilla Firefox - 75 (64 bit)
+
+Special Steps for IE - https://github.com/SeleniumHQ/selenium/wiki/InternetExplorerDriver

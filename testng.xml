@@ -3,7 +3,7 @@
 <suite thread-count="2" name="APITestProjectSuite" parallel="tests">
   <test name="APITest">
     <classes>
-      <class name="Api.RunCucumberTest"> </class>
+      <class name="RunCucumberTest"> </class>
     </classes>
   </test> <!-- APITest -->
 </suite> <!-- APITestProjectSuite -->

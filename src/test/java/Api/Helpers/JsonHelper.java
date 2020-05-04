@@ -9,7 +9,7 @@ import java.util.stream.StreamSupport;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import Api.DIContext;
+import Utils.DIContext;
 
 public class JsonHelper {
 	JSONArray universalJArray;
