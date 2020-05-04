@@ -52,7 +52,7 @@ public class WebdriverFactory implements IWebdriverFactory {
 			cOptions.addArguments("disable-infobars");
 			cOptions.setHeadless(false);
 			cOptions.setBinary(System.getProperty("user.dir") + "\\Binaries\\Chrome81\\Application\\chrome.exe");
-			this.scenarioContext.GetExtentTest().info("bianry set to :"+ System.getProperty("user.dir") + "\\Binaries\\Chrome71\\Application\\chrome.exe");
+			this.scenarioContext.GetExtentTest().info("bianry set to :"+ System.getProperty("user.dir") + "\\Binaries\\Chrome81\\Application\\chrome.exe");
 			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\Binaries\\chromedriver_win32\\chromedriver.exe");
 			this.scenarioContext.GetExtentTest().info("webdriver.chrome.driver set at :"+ System.getProperty("webdriver.chrome.driver"));
 			driver = new ChromeDriver(cOptions);

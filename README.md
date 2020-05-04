@@ -87,3 +87,17 @@ Selenium Downloads Links
 7. Mozilla Firefox - 75 (64 bit)
 
 Special Steps for IE - https://github.com/SeleniumHQ/selenium/wiki/InternetExplorerDriver
+
+Running UI Tests (in parallel mode)
+===================================
+The Parallel mode is by default enabled for UI or API in the Test Runner class (i.e. in the @DataProvider override) in conjunction with the 
+thread count specified in pom.xml plugins section for maven-surefire-plugin
+
+Imp -  The framework expects Chrome Browser binaries to be present at \\Binaries\\Chrome81\\Application\\chrome.exe
+and Firefox Browser binaries to be present at \\Binaries\\MozillaFirefox75\\firefox.exe.  This is configured in WebDriverFactory.java file.
+You need to either place the resp binaries (matching the path) or modify the code in WebDriverFactory to reflect your system's binary location.
+
+Command to run UI tests -  mvn test -Dcucumber.options="--tags @UI"
+
+
+NOTE -  Presently IE and Chrome works fine. But Firefox has issues, this is due to versiom compatibility issue.
