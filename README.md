@@ -18,12 +18,7 @@ Runing Cucumber tests in Parallel:
 1. In the Cucumber Runner class override the DataProvider method from AbstractTestNGCucumberTests to set 'parallel=true'.
 2. The default thread count is 10, to configure it, add the below Configuration in SureFire plugin in POM under plugins section
 	``` xml
-	<properties>
-        <property>
-            <name>dataproviderthreadcount</name>
-            <value>  user input int value to set for Thread Count </value>
-        </property>
-    </properties>
+	<suite name="<name>" parallel="tests" data-provider-thread-count="3">
 	```
 	
 Default Cucumber pretty format reports
