@@ -4,9 +4,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Properties;
 
 import org.openqa.selenium.PageLoadStrategy;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -14,8 +16,9 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-
-
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 
 public class WebdriverFactory implements IWebdriverFactory {
@@ -45,41 +48,56 @@ public class WebdriverFactory implements IWebdriverFactory {
 		WebDriver driver = null;
 		String browser = readBrowserProperty();
 		this.scenarioContext.GetExtentTest().info("Read Properties File Browser set to :" + browser);
+		URL huburl = new URL("http://192.168.99.100:4444/wd/hub");
 		switch (browser.toLowerCase()) {
 		case "chrome":
-			ChromeOptions cOptions = new ChromeOptions();
+			/*ChromeOptions cOptions = new ChromeOptions();
 			cOptions.addArguments("start-maximized");
 			cOptions.addArguments("disable-infobars");
 			cOptions.setHeadless(false);
 			cOptions.setBinary(System.getProperty("user.dir") + "\\Binaries\\Chrome81\\Application\\chrome.exe");
-			this.scenarioContext.GetExtentTest().info("bianry set to :"+ System.getProperty("user.dir") + "\\Binaries\\Chrome81\\Application\\chrome.exe");
-			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\Binaries\\chromedriver_win32\\chromedriver.exe");
-			this.scenarioContext.GetExtentTest().info("webdriver.chrome.driver set at :"+ System.getProperty("webdriver.chrome.driver"));
-			driver = new ChromeDriver(cOptions);
-			this.scenarioContext.GetExtentTest().info("Created Chrome Driver");
+			this.scenarioContext.GetExtentTest().info("Browser bianry set to :"+ System.getProperty("user.dir") + "\\Binaries\\Chrome81\\Application\\chrome.exe");
+			*/
+			DesiredCapabilities ccaps = DesiredCapabilities.chrome();
+			ccaps.getCapabilityNames().forEach(name -> this.scenarioContext.GetExtentTest().info(name));	
+			//ccaps.setAcceptInsecureCerts(true);
+			//ccaps.setCapability(ChromeOptions.CAPABILITY, cOptions);
+			//ccaps.setJavascriptEnabled(true);
+			ccaps.setBrowserName("chrome");
+			ccaps.setPlatform(Platform.LINUX); // Since the node is a Linux node inside docker container
+			ccaps.setVersion("81.0.4044.92"); // MUST specify exact version
+			driver = new RemoteWebDriver(huburl,ccaps);			
+			this.scenarioContext.GetExtentTest().info("Created Remote Chrome Driver");
 			break;
 		case "firefox":
 			FirefoxOptions fOptions = new FirefoxOptions();
 			fOptions.setBinary(System.getProperty("user.dir") + "\\Binaries\\MozillaFirefox75\\firefox.exe");
 			fOptions.setHeadless(false);
 			fOptions.addArguments("start-maximized");
-			System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "\\Binaries\\geckodriver-v0.25.0-win64\\geckodriver.exe");
-			this.scenarioContext.GetExtentTest().info("webdriver.gecko.driver set at :"+ System.getProperty("webdriver.gecko.driver"));
-			driver = new FirefoxDriver(fOptions);
-			this.scenarioContext.GetExtentTest().info("Created Firefox Driver");
+			DesiredCapabilities fcaps = DesiredCapabilities.firefox();
+			fcaps.getCapabilityNames().forEach(name -> this.scenarioContext.GetExtentTest().info(name));	
+			fcaps.setAcceptInsecureCerts(true);
+			fcaps.merge(fOptions);
+			fcaps.setJavascriptEnabled(true);
+			fcaps.setBrowserName("FIREFOX");
+			driver = new RemoteWebDriver(huburl,fcaps);			
+			this.scenarioContext.GetExtentTest().info("Created Remote Firefox Driver");
 			break;
 		case "ie":
-			InternetExplorerOptions iOptions = new InternetExplorerOptions();
-			iOptions.takeFullPageScreenshot();
-			iOptions.ignoreZoomSettings();
-			iOptions.requireWindowFocus();
-			iOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-			iOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.ACCEPT);
-			System.setProperty("webdriver.ie.driver", System.getProperty("user.dir") + "\\Binaries\\IEDriverServer_Win32_3.141.59\\IEDriverServer.exe");
-			this.scenarioContext.GetExtentTest().info("webdriver.ie.driver set at :"+ System.getProperty("webdriver.ie.driver"));
-			
-			driver = new InternetExplorerDriver(iOptions);
-			this.scenarioContext.GetExtentTest().info("Created IE Driver");
+			//InternetExplorerOptions iOptions = new InternetExplorerOptions();
+			///iOptions.takeFullPageScreenshot();
+			//iOptions.ignoreZoomSettings();
+			//iOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+			//iOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.ACCEPT);
+			DesiredCapabilities icaps = DesiredCapabilities.internetExplorer();
+			icaps.getCapabilityNames().forEach(name -> this.scenarioContext.GetExtentTest().info(name));			
+			//icaps.setAcceptInsecureCerts(true);
+			//icaps.merge(iOptions);
+			//icaps.setJavascriptEnabled(true);
+			//icaps.setBrowserName("IE");
+			//icaps.setCapability("requireWindowFocus", true);			
+			driver = new RemoteWebDriver(huburl,icaps);	
+			this.scenarioContext.GetExtentTest().info("Created Remote IE Driver");
 			break;
 		}
 

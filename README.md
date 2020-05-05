@@ -1,5 +1,5 @@
 # Cucumber
-Cucumer Java project consisting of API REST and SOAP tests.
+Cucumer Java project consisting of Docker infrastructure to spin up Selenium Grid
 
 
 Maven commands to run tests :
@@ -16,14 +16,9 @@ Runing Cucumber tests in Parallel:
 =================================
 
 1. In the Cucumber Runner class override the DataProvider method from AbstractTestNGCucumberTests to set 'parallel=true'.
-2. The default thread count is 10, to configure it, add the below Configuration in SureFire plugin in POM under plugins section
+2. The default thread count is 10, to configure it, add the below Configuration in testNg xml
 	``` xml
-	<properties>
-        <property>
-            <name>dataproviderthreadcount</name>
-            <value>  user input int value to set for Thread Count </value>
-        </property>
-    </properties>
+	<suite name="<name>" parallel="tests" data-provider-thread-count="3">
 	```
 	
 Default Cucumber pretty format reports
@@ -76,18 +71,6 @@ Adding Extent Reports Support for parallel runs
 6. Inside individual Step Definition method, retrieve the Extent Test object to log statements.
 
 
-Selenium Downloads Links
-========================
-1. IEdriver server exe - https://selenium-release.storage.googleapis.com/index.html?path=3.141/
-2. Chrome driver exe - https://chromedriver.storage.googleapis.com/index.html
-3. Firefox (geckodriver exe) - https://github.com/mozilla/geckodriver/releases
-4. Selenium-java version - https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java/3.141.59
-5. Chrome Browser version - 81 (32 bit)
-6. IE version - 11 (32 bit)
-7. Mozilla Firefox - 75 (64 bit)
-
-Special Steps for IE - https://github.com/SeleniumHQ/selenium/wiki/InternetExplorerDriver
-
 Running UI Tests (in parallel mode)
 ===================================
 The Parallel mode is by default enabled for UI or API in the Test Runner class (i.e. in the @DataProvider override) in conjunction with the 
@@ -100,4 +83,27 @@ You need to either place the resp binaries (matching the path) or modify the cod
 Command to run UI tests -  mvn test -Dcucumber.options="--tags @UI"
 
 
-NOTE -  Presently IE and Chrome works fine. But Firefox has issues, this is due to versiom compatibility issue.
+DOCKER Commands
+===============
+1. If while running docker quick start terminal it waits/timesout while getting IP address then try 
+deleting the local default docker machine - "docker-machine rm default" 
+
+2. If on windows 10 HOME - we need to install Docker For Windows and Docker ToolBox
+
+3. Execute the docker-compose.yaml, the output logs reflects the internal IP within the docker container. We can get the public url
+ from Docker QuickStart terminal, look for the line - "docker is configured to use the default machine with IP 192.168.99.100
+
+4. The HUB url and node urls could be extracted from output.txt (which is created by piping docker command output).
+ Visit the hub console at - http://192.168.99.100:4444/grid/console and verify the nodes that got registered.
+ 
+5. To scale the number of nodes we need to use docker up with --scale command.
+ NOTE - The old scale command has been depricated (docker-compose scale servicename=3)
+ more details here -  https://github.com/docker/compose/issues/5251
+
+
+
+
+
+
+
+
