@@ -1,4 +1,4 @@
-@UI
+@UI @UI1
 Feature: UI feature 1 for test
 
 Scenario: F1S1 :: Dummy UI scenario - Practice
