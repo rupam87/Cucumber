@@ -2,3 +2,4 @@
 target/
 test-output/
 APITestProject-0.0.1-SNAPSHOT/
+/output.txt
