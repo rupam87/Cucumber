@@ -80,7 +80,7 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 				}
 				match = buffer.toString().contains("Registering the node to the hub");
 				System.out.println("Match Not Found, Waiting for 2 sec. Attempt :: " + counter);
-				if (counter == 10) {
+				if (counter == 30) {
 					System.out.println("Contents of Output File: ");
 					System.out.println(buffer);
 				} else
@@ -94,6 +94,7 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 		match = false;
 		counter = 0;
 		// Execute Docker scale to increase Nodes
+		runTime = Runtime.getRuntime();
 		runTime.exec(System.getProperty("user.dir") + "//dockerScale.bat");
 		System.out.println("Executed dockerScale.bat");
 		// Wait for Node Counts to match expected count
@@ -105,7 +106,7 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 			int slots = jObj.getJSONObject("slotCounts").getInt("total");
 			// Verify Slots matched the expected count (user should know exp
 			// count from dockerScale.bat file)
-			if (counter == 10) {
+			if (counter == 30) {
 				System.out.println("response :: " + response.getBody().asString());
 				assertEquals(slots, 4);
 			} else {
