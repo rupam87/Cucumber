@@ -1,6 +1,8 @@
 package stepDefs;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 
 import com.aventstack.extentreports.ExtentTest;
@@ -39,6 +41,15 @@ public class Hooks {
 	 */
 	@Before("@UI")
 	public void beforeUIHooks(Scenario scenario) throws IOException {
+
+		// Read the Docker public IP to pass it on to Webdriver Factory
+		try (BufferedReader bufReader = new BufferedReader(
+				new FileReader(System.getProperty("user.dir") + "//output.txt"))) {
+			System.out.println("Waiting to find an IP match in output.txt");
+			String dockerPublicIP = bufReader.readLine();
+			this.scenarioContext.SetValueToStore(dockerPublicIP);
+		}
+
 		// Get Extent Test Object
 		this.test = this.scenarioContext.GetExtentTest(ExtentManager.ExtentReportsInstance(), scenario.getName());
 		System.out.println("Extent Test Object stored in Scenario context!");
@@ -57,7 +68,7 @@ public class Hooks {
 
 	@After("@UI")
 	public void afterUIHooks() {
-		driverFactory.DisposeDriver();		
+		driverFactory.DisposeDriver();
 	}
 
 	@After

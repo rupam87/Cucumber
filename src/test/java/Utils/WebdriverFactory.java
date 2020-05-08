@@ -48,7 +48,7 @@ public class WebdriverFactory implements IWebdriverFactory {
 		WebDriver driver = null;
 		String browser = readBrowserProperty();
 		this.scenarioContext.GetExtentTest().info("Read Properties File Browser set to :" + browser);
-		URL huburl = new URL("http://192.168.99.100:4444/wd/hub");
+		URL huburl = new URL("http://" + this.scenarioContext.GetValueStored() +":4444/wd/hub");
 		switch (browser.toLowerCase()) {
 		case "chrome":
 			/*ChromeOptions cOptions = new ChromeOptions();

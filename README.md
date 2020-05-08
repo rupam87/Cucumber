@@ -1,7 +1,38 @@
 # Cucumber
 Cucumer Java project consisting of Docker infrastructure to spin up Selenium Grid
 
+PRE-Requisites
+==============
+* Win 10 Home OS
+* Docker for Windows installed with Docker ToolBox.
+* Docker QuickStart Terminal MUST be open such that default machine has been created with IP.
 
+
+DOCKER Commands execution Flow
+==============================
+1. If while running docker quick start terminal it waits/timesout while getting IP address then try 
+deleting the local default docker machine - "docker-machine rm default" 
+
+2. Executing a mvn command to run cucumber tests would internally create the Selenium Hub and Nodes in docker default machine.
+The DockerSrart.bat file contains command to execute docker-compose.yml and is executed by java code under @BeforeSuite. The output
+of the docker command is redirected to a file "output.txt".
+Subsequently the java code checks for  
+   a. Reads the docker machine's Public IP from output.txt
+   b. Waits to check for the line "Registered a node" - indicating Hub and nodes are up.
+   c. Executes 'dockerScale.bat' in a new cmd window.
+   d. Invokes the API "http://dockerPublicIP:4444/grid/api/hub", reads the slots from the JSON response
+      to match the slot count. i.e. No of Nodes expected count.
+	  
+3. @AfterSuite ensures that the dockerDown.bat is executed and waits for 5 secs for docker to stop all the containers before deleting the output.txt file.
+
+4. The HUB url and node urls could be extracted from output.txt (which is created by piping docker command output).
+ Visit the hub console at - http://192.168.99.100:4444/grid/console and verify the nodes that got registered.
+ 
+5. To scale the number of nodes we need to use docker up with --scale command.
+ NOTE - The old scale command has been depricated (docker-compose scale servicename=3)
+ more details here -  https://github.com/docker/compose/issues/5251
+ 
+ 
 Maven commands to run tests :
 =============================
 1.  mvn clean test  :- This will invoke the maven surefire plugin which is configured to point to the TestNG xml file. Thus issuing
@@ -24,6 +55,7 @@ Runing Cucumber tests in Parallel:
 Default Cucumber pretty format reports
 ======================================
 1. Add the following to the Cucumber.Options -> plugins section. "pretty", "html:target/cucumber" to generate reports in ../target/cucumber folder
+
 
 "maven-cucumber-reporting" Reports
 ==================================
@@ -80,30 +112,5 @@ Imp -  The framework expects Chrome Browser binaries to be present at \\Binaries
 and Firefox Browser binaries to be present at \\Binaries\\MozillaFirefox75\\firefox.exe.  This is configured in WebDriverFactory.java file.
 You need to either place the resp binaries (matching the path) or modify the code in WebDriverFactory to reflect your system's binary location.
 
-Command to run UI tests -  mvn test -Dcucumber.options="--tags @UI"
-
-
-DOCKER Commands
-===============
-1. If while running docker quick start terminal it waits/timesout while getting IP address then try 
-deleting the local default docker machine - "docker-machine rm default" 
-
-2. If on windows 10 HOME - we need to install Docker For Windows and Docker ToolBox
-
-3. Execute the docker-compose.yaml, the output logs reflects the internal IP within the docker container. We can get the public url
- from Docker QuickStart terminal, look for the line - "docker is configured to use the default machine with IP 192.168.99.100
-
-4. The HUB url and node urls could be extracted from output.txt (which is created by piping docker command output).
- Visit the hub console at - http://192.168.99.100:4444/grid/console and verify the nodes that got registered.
- 
-5. To scale the number of nodes we need to use docker up with --scale command.
- NOTE - The old scale command has been depricated (docker-compose scale servicename=3)
- more details here -  https://github.com/docker/compose/issues/5251
-
-
-
-
-
-
-
+* Command to run UI tests -  mvn test -Dcucumber.options="--tags @UI"
 
