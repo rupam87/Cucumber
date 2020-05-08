@@ -14,13 +14,12 @@ DOCKER Commands execution Flow
 deleting the local default docker machine - "docker-machine rm default" 
 
 2. Executing a mvn command to run cucumber tests would internally create the Selenium Hub and Nodes in docker default machine.
-The DockerSrart.bat file contains command to execute docker-compose.yml and is executed by java code under @BeforeSuite. The output
-of the docker command is redirected to a file "output.txt".
-Subsequently the java code checks for  
-   a. Reads the docker machine's Public IP from output.txt
-   b. Waits to check for the line "Registered a node" - indicating Hub and nodes are up.
-   c. Executes 'dockerScale.bat' in a new cmd window.
-   d. Invokes the API "http://dockerPublicIP:4444/grid/api/hub", reads the slots from the JSON response
+The DockerStart.bat file contains command to execute docker-compose.yml and is executed by java code under @BeforeSuite. The output
+of the docker command is redirected to a file "output.txt". Subsequently the java code checks for :  
+   *a. Reads the docker machine's Public IP from output.txt
+   *b. Waits to check for the line "Registered a node" - indicating Hub and nodes are up.
+   *c. Executes 'dockerScale.bat' in a new cmd window.
+   *d. Invokes the API "http://dockerPublicIP:4444/grid/api/hub", reads the slots from the JSON response
       to match the slot count. i.e. No of Nodes expected count.
 	  
 3. @AfterSuite ensures that the dockerDown.bat is executed and waits for 5 secs for docker to stop all the containers before deleting the output.txt file.
