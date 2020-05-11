@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 
+import cucumber.api.PickleStepTestStep;
 import io.restassured.response.Response;
 
 public class DIContext {
@@ -22,6 +23,8 @@ public class DIContext {
 	private ExtentTest test = null;
 	private Response response = null;
 	private WebDriver driver = null;
+	private int stepErrorCount = 0;
+	private Exception stepError = null;
 
 	public DIContext() {
 		username = "abc";
@@ -96,5 +99,18 @@ public class DIContext {
 
 	public WebDriver GetWebDriver() {
 		return this.driver;
+	}
+
+	public void IncrementStepErrorCount(Exception e) {
+		this.stepErrorCount += 1;
+		this.stepError = e;
+	}
+
+	public int getStepErrorCount() {
+		return this.stepErrorCount;
+	}
+
+	public Exception getStepError() {
+		return this.stepError;
 	}
 }

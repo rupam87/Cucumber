@@ -46,6 +46,7 @@ public class RestAPISteps implements En {
 				this.scenarioContext.GetExtentTest().pass("Inside 'I store fake creds in context'");
 			} catch (Exception e) {
 				this.scenarioContext.GetExtentTest().fail("Inside 'I store fake creds in context'");
+				this.scenarioContext.IncrementStepErrorCount(e);
 			}
 		});
 
@@ -98,6 +99,7 @@ public class RestAPISteps implements En {
 				this.scenarioContext.GetExtentTest().pass("Inside 'I transform an array of POJO to JSON file'");
 			} catch (Exception e) {
 				this.scenarioContext.GetExtentTest().fail("Inside 'I transform an array of POJO to JSON file'");
+				this.scenarioContext.IncrementStepErrorCount(e);
 			}
 
 		});
@@ -118,6 +120,7 @@ public class RestAPISteps implements En {
 							.pass("'I read the file {string} and modify {string}, {string} values'");
 					} catch (Exception e) {
 						this.scenarioContext.GetExtentTest().fail("I read the file {string} and modify {string}, {string} values'");
+						this.scenarioContext.IncrementStepErrorCount(e);
 					}
 				});
 

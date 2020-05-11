@@ -2,3 +2,5 @@
 target/
 test-output/
 APITestProject-0.0.1-SNAPSHOT/
+Binaries/Chrome81/
+Binaries/MozillaFirefox75

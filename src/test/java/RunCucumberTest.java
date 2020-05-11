@@ -18,7 +18,7 @@ import io.cucumber.testng.PickleEventWrapper;
 
 //@RunWith(Cucumber.class)
 @CucumberOptions(plugin = { "pretty", "html:target/cucumber",
-		"json:test-output/jsonReports/CucumberTestReport.json" }, features = "src/test/resources", glue = {
+		"json:test-output/jsonReports/CucumberTestReport.json", "Utils.CustomEventListenerPlugin" }, features = "src/test/resources", glue = {
 				"stepDefs" }, tags = { "@UI" })
 public class RunCucumberTest extends AbstractTestNGCucumberTests {
 
