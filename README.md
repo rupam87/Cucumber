@@ -1,4 +1,4 @@
-# Cucumber
+# Cucumber-Docker
 Cucumer Java project consisting of Docker infrastructure to spin up Selenium Grid
 
 PRE-Requisites

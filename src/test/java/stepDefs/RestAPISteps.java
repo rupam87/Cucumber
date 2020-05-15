@@ -46,6 +46,7 @@ public class RestAPISteps implements En {
 				this.scenarioContext.GetExtentTest().pass("Inside 'I store fake creds in context'");
 			} catch (Exception e) {
 				this.scenarioContext.GetExtentTest().fail("Inside 'I store fake creds in context'");
+				this.scenarioContext.IncrementStepErrorCount(e);
 			}
 		});
 
@@ -98,6 +99,7 @@ public class RestAPISteps implements En {
 				this.scenarioContext.GetExtentTest().pass("Inside 'I transform an array of POJO to JSON file'");
 			} catch (Exception e) {
 				this.scenarioContext.GetExtentTest().fail("Inside 'I transform an array of POJO to JSON file'");
+				this.scenarioContext.IncrementStepErrorCount(e);
 			}
 
 		});
@@ -105,19 +107,21 @@ public class RestAPISteps implements En {
 		Given("I read the file {string} and modify {string}, {string} values",
 				(String fileName, String name, String job) -> {
 					try {
-					String curDir = System.getProperty("user.dir");
-					File file = new File(curDir + "\\src\\test\\java\\Api\\Templates\\" + fileName);
-					String fileContents = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
+						String curDir = System.getProperty("user.dir");
+						File file = new File(curDir + "\\src\\test\\java\\Api\\Templates\\" + fileName);
+						String fileContents = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
 
-					JSONObject jobj = new JSONObject(fileContents);
-					jobj.put("name", name);
-					jobj.put("job", job);
+						JSONObject jobj = new JSONObject(fileContents);
+						jobj.put("name", name);
+						jobj.put("job", job);
 
-					this.scenarioContext.SetJsonObject(jobj);
-					this.scenarioContext.GetExtentTest()
-							.pass("'I read the file {string} and modify {string}, {string} values'");
+						this.scenarioContext.SetJsonObject(jobj);
+						this.scenarioContext.GetExtentTest()
+								.pass("'I read the file {string} and modify {string}, {string} values'");
 					} catch (Exception e) {
-						this.scenarioContext.GetExtentTest().fail("I read the file {string} and modify {string}, {string} values'");
+						this.scenarioContext.GetExtentTest()
+								.fail("I read the file {string} and modify {string}, {string} values'");
+						this.scenarioContext.IncrementStepErrorCount(e);
 					}
 				});
 
@@ -165,7 +169,7 @@ public class RestAPISteps implements En {
 				// Get FLight Status Array
 				JSONArray flightStatuses = operationalFlightSegments.getJSONObject(0).getJSONArray("flightStatuses");
 				System.out.println("Printing Pretty format:" + flightStatuses.toString(4));
-				
+
 				// Use Stream to fetch the Status Type for the node whose code =
 				// ERL
 				List<JSONObject> flightStatus = StreamSupport.stream(flightStatuses.spliterator(), false)
@@ -238,7 +242,8 @@ public class RestAPISteps implements En {
 					.filter(n -> n.getString("name").startsWith(inputName)).collect(Collectors.toList());
 
 			filteredNames.forEach(fName -> System.out.println(fName.toString()));
-			this.scenarioContext.GetExtentTest().pass("I filter all names starting with {string} from the response to print them");
+			this.scenarioContext.GetExtentTest()
+					.pass("I filter all names starting with {string} from the response to print them");
 		});
 
 		Then("I store the url for name={string} in scenario context", (String name) -> {
@@ -279,7 +284,8 @@ public class RestAPISteps implements En {
 							filterVal, pathToStore);
 					scenarioContext.SetValueToStore(actual_val);
 					System.out.println("Value Stored :" + scenarioContext.GetValueStored());
-					this.scenarioContext.GetExtentTest().pass("I filter {string}={int} to store {string} in scenario context");
+					this.scenarioContext.GetExtentTest()
+							.pass("I filter {string}={int} to store {string} in scenario context");
 				});
 	}
 }

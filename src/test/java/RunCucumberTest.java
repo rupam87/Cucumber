@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.json.JSONObject;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
@@ -36,18 +37,26 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 	public void CreateExtentReports() throws IOException, InterruptedException, URISyntaxException {
 
 		// Execute DockerUp.bat to bring up containers
-		Runtime.getRuntime().exec(System.getProperty("user.dir") + "//dockerUp.bat");
+		// Runtime.getRuntime().exec(System.getProperty("user.dir") +
+		// "//dockerUp.bat");
+		Runtime.getRuntime().exec("cmd.exe /c start dockerUp.bat", null, new File(System.getProperty("user.dir")));
 		System.out.println("Executed dockerUp.bat");
 
 		// Check if output file exists or not
 		File oFile = new File(System.getProperty("user.dir") + "//output.txt");
-		if (!oFile.exists())
-			Thread.sleep(3000);
-
+		int counter = 0;
+		while (!oFile.exists() && counter++ < 10) {
+			System.out.println("Waiting for output.txt");
+			if (counter == 10) {
+				System.out.println("output.txt did not get generated. Aborting!");
+				Assert.fail();
+			} else
+				Thread.sleep(3000);
+		}
 		// Wait for Docker Hub and Nodes to be ready. i.e.
 		// read the output file and get Docker default machine's public IP
 		boolean match = false;
-		int counter = 0;
+		counter = 0;
 		String dockerPublicIP = "";
 
 		while (match != true && counter < 30) {
@@ -93,7 +102,8 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 		match = false;
 		counter = 0;
 		// Execute Docker scale to increase Nodes
-		// MUST execute this is new cmd window, as executing dockerSacle on the same window where dockerUp
+		// MUST execute this is new cmd window, as executing dockerSacle on the
+		// same window where dockerUp
 		// is executing does not take effect
 		Runtime.getRuntime().exec("cmd.exe /c start dockerScale.bat", null, new File(System.getProperty("user.dir")));
 		System.out.println("Executed dockerScale.bat");
@@ -154,7 +164,7 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 
 		// Execute dockerDown bat to shut down all containers
 		Runtime runTime = Runtime.getRuntime();
-		runTime.exec(System.getProperty("user.dir") + "//dockerDown.bat");
+		runTime.exec("cmd.exe /c start dockerDown.bat", null, new File(System.getProperty("user.dir")));
 		Thread.sleep(5000);
 		System.out.println("Executed dockerDown.bat");
 
