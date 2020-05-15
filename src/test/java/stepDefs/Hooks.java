@@ -49,13 +49,13 @@ public class Hooks {
 	public void beforeUIHooks(Scenario scenario) throws IOException {
 
 		// Read the Docker public IP to pass it on to Webdriver Factory
-		try (BufferedReader bufReader = new BufferedReader(
+		/*try (BufferedReader bufReader = new BufferedReader(
 				new FileReader(System.getProperty("user.dir") + "//output.txt"))) {
-			System.out.println("Waiting to find an IP match in output.txt");
-			String dockerPublicIP = bufReader.readLine();
+			System.out.println("Waiting to find an IP match in output.txt");*/
+			String dockerPublicIP = "192.168.99.101"; //bufReader.readLine();
 			this.scenarioContext.SetValueToStore(dockerPublicIP);
 			System.out.println("INSIDE BEFORE HOOKS!! Scenario name :" + scenario.getName());
-		}
+		//}
 
 		// Get Extent Test Object
 		this.test = this.scenarioContext.GetExtentTest(ExtentManager.ExtentReportsInstance(), scenario.getName());
