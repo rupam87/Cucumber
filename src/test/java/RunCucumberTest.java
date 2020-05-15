@@ -36,9 +36,7 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 	@BeforeSuite
 	public void CreateExtentReports() throws IOException, InterruptedException, URISyntaxException {
 
-		// Execute DockerUp.bat to bring up containers
-		// Runtime.getRuntime().exec(System.getProperty("user.dir") +
-		// "//dockerUp.bat");
+		/*// Execute DockerUp.bat to bring up containers
 		Runtime.getRuntime().exec("cmd.exe /c start dockerUp.bat", null, new File(System.getProperty("user.dir")));
 		System.out.println("Executed dockerUp.bat");
 
@@ -130,7 +128,7 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 				Thread.sleep(2000);
 			}
 		}
-
+*/
 		// Create Extent Report Instance to be used by tests
 		eReport = ExtentManager.ExtentReportsInstance();
 	}
@@ -166,14 +164,14 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 		if (eReport != null)
 			eReport.flush();
 
-		// Execute dockerDown bat to shut down all containers
+		/*// Execute dockerDown bat to shut down all containers
 		Runtime runTime = Runtime.getRuntime();
 		runTime.exec("cmd.exe /c start dockerDown.bat", null, new File(System.getProperty("user.dir")));
 		Thread.sleep(5000);
 		System.out.println("Executed dockerDown.bat");
 
 		// Delete output file if it exists
-		/*File f = new File(System.getProperty("user.dir") + "//output.txt");
+		File f = new File(System.getProperty("user.dir") + "//output.txt");
 		int counter = 0;
 		while (!f.delete() && counter++ < 10) {
 			if (f.delete()) {
@@ -188,9 +186,9 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 					Thread.sleep(1000);
 				}
 			}
-		}*/
+		}
 
-		System.out.println("Deleted output file");
+		System.out.println("Deleted output file");*/
 	}
 
 }
