@@ -53,19 +53,23 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 			} else
 				Thread.sleep(3000);
 		}
+		
+		System.out.println("Got output.txt");
+		Thread.sleep(3000);
 		// Wait for Docker Hub and Nodes to be ready. i.e.
 		// read the output file and get Docker default machine's public IP
 		boolean match = false;
 		counter = 0;
 		String dockerPublicIP = "";
 
-		while (match != true && counter < 30) {
+		while (match != true && counter++ < 30) {
 			try (BufferedReader bufReader = new BufferedReader(
 					new FileReader(System.getProperty("user.dir") + "//output.txt"))) {
 				System.out.println("Waiting to find an IP match in output.txt");
 				dockerPublicIP = bufReader.readLine();
+				System.out.println("Read output.txt.");
 				match = dockerPublicIP.matches("[0-9]+.[0-9]+.[0-9]+.[0-9]+");
-				counter++;
+				//counter++;
 				System.out.println(
 						"Match Not Found, got back: " + dockerPublicIP + " .Waiting for 2 sec. Attempt :: " + counter);
 				Thread.sleep(2000);
@@ -169,7 +173,7 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 		System.out.println("Executed dockerDown.bat");
 
 		// Delete output file if it exists
-		File f = new File(System.getProperty("user.dir") + "//output.txt");
+		/*File f = new File(System.getProperty("user.dir") + "//output.txt");
 		int counter = 0;
 		while (!f.delete() && counter++ < 10) {
 			if (f.delete()) {
@@ -184,7 +188,7 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 					Thread.sleep(1000);
 				}
 			}
-		}
+		}*/
 
 		System.out.println("Deleted output file");
 	}
