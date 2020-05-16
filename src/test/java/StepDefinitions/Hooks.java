@@ -1,4 +1,4 @@
-package stepDefs;
+package StepDefinitions;
 
 import java.io.BufferedReader;
 import java.io.File;

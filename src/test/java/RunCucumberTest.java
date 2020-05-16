@@ -28,7 +28,7 @@ import io.restassured.response.Response;
 
 @CucumberOptions(plugin = { "pretty", "html:target/cucumber",
 		"json:test-output/jsonReports/CucumberTestReport.json" }, features = "src/test/resources", glue = {
-				"stepDefs" }, tags = { "@UI" })
+				"StepDefinitions" }, tags = { "@UI" })
 public class RunCucumberTest extends AbstractTestNGCucumberTests {
 
 	ExtentReports eReport = null;
