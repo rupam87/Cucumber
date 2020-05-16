@@ -1,12 +1,9 @@
-package stepDefs;
+package StepDefinitions;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.Calendar;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
@@ -18,16 +15,11 @@ import com.aventstack.extentreports.MediaEntityBuilder;
 import Utils.DIContext;
 import Utils.ExtentManager;
 import Utils.WebdriverFactory;
-import cucumber.api.PickleStepTestStep;
 import cucumber.api.TestCase;
 import io.cucumber.core.api.Scenario;
-import io.cucumber.core.event.Status;
-//import org.testng.annotations.AfterMethod;
-//import org.testng.annotations.BeforeMethod;
 import io.cucumber.java.After;
 import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
-import io.cucumber.java.BeforeStep;
 
 public class Hooks {
 
@@ -85,13 +77,13 @@ public class Hooks {
 	/*@BeforeStep
 	public void beforeStepHooks(Scenario scenario) throws Exception {
 		// You need to filter out before/after hooks
-		List<PickleStepTestStep> stepDefs = cukesTestCase.getTestSteps().stream()
+		List<PickleStepTestStep> StepDefinitions = cukesTestCase.getTestSteps().stream()
 				.filter(x -> x instanceof PickleStepTestStep).map(x -> (PickleStepTestStep) x)
 				.collect(Collectors.toList());
 
 		// This object now holds the information about the current step
 		// definition
-		PickleStepTestStep currentStepDef = stepDefs.get(currentStepDefIndex);
+		PickleStepTestStep currentStepDef = StepDefinitions.get(currentStepDefIndex);
 
 		this.scenarioContext.SetStepDefInfo(currentStepDef);
 		System.out.println("INSIDE BEFORE STEP HOOKS!! Scenario name :" + scenario.getName());
