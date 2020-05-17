@@ -7,6 +7,7 @@ services:
     container_name: selenium-hub
     ports:
       - "4444:4444"
+  
   chrome1:
     image: selenium/node-chrome:3.141.59
     volumes:
@@ -17,7 +18,7 @@ services:
       - HUB_HOST=selenium-hub
       - HUB_PORT=4444
       
- chrome2:
+  chrome2:
     image: selenium/node-chrome:3.141.59
     volumes:
       - /dev/shm:/dev/shm
