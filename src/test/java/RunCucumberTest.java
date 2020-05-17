@@ -38,7 +38,7 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 	public void CreateExtentReports() throws IOException, InterruptedException, URISyntaxException {
 
 		// Execute DockerUp.bat to bring up containers
-		Runtime.getRuntime().exec("cmd /c start dockerUp.bat", null, new File(System.getProperty("user.dir")));
+		Runtime.getRuntime().exec("cmd /w /c start dockerUp.bat", null, new File(System.getProperty("user.dir")));
 		System.out.println("Executed dockerUp.bat");
 
 		// Check if output file exists or not
@@ -67,7 +67,6 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 				System.out.println("Read output.txt.");
 				match = StringUtils.isNotBlank(dockerPublicIP) ? dockerPublicIP.matches("[0-9]+.[0-9]+.[0-9]+.[0-9]+")
 						: false;
-				// counter++;
 				System.out.println("Match Not Found. Waiting for 2 sec. Attempt :: " + counter);
 				Thread.sleep(2000);
 			}
@@ -94,7 +93,7 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 					System.out.println("Contents of Output File: ");
 					System.out.println(buffer);
 				} else
-					Thread.sleep(2000);
+					Thread.sleep(5000);
 			}
 		}
 		assertTrue(match);
@@ -104,7 +103,7 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 		match = false;
 		counter = 0;
 		// Execute Docker scale to increase Nodes
-		Runtime.getRuntime().exec("cmd /c start dockerScale.bat", null, new File(System.getProperty("user.dir")));
+		Runtime.getRuntime().exec("cmd /w /c start dockerScale.bat", null, new File(System.getProperty("user.dir")));
 		System.out.println("Executed dockerScale.bat");
 		// Wait for Node Counts to match expected count
 		// Call the API - http://<dockerPublicIP>:4444/grid/api/hub
