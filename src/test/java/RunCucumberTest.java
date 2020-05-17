@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.codehaus.plexus.util.StringUtils;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -64,10 +65,10 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 				System.out.println("Waiting to find an IP match in output.txt");
 				dockerPublicIP = bufReader.readLine();
 				System.out.println("Read output.txt.");
-				match = dockerPublicIP.matches("[0-9]+.[0-9]+.[0-9]+.[0-9]+");
+				match = StringUtils.isNotBlank(dockerPublicIP) ? dockerPublicIP.matches("[0-9]+.[0-9]+.[0-9]+.[0-9]+")
+						: false;
 				// counter++;
-				System.out.println(
-						"Match Not Found, got back: " + dockerPublicIP + " .Waiting for 2 sec. Attempt :: " + counter);
+				System.out.println("Match Not Found. Waiting for 2 sec. Attempt :: " + counter);
 				Thread.sleep(2000);
 			}
 		}
@@ -86,7 +87,8 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 				while ((line = bufReader.readLine()) != null) {
 					buffer.append(line);
 				}
-				match = buffer.toString().contains("Registered a node");
+				match = StringUtils.isNotBlank(buffer.toString()) ? buffer.toString().contains("Registered a node")
+						: false;
 				System.out.println("Match Not Found, Waiting for 2 sec. Attempt :: " + counter);
 				if (counter == 60) {
 					System.out.println("Contents of Output File: ");
@@ -115,7 +117,7 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 				System.out.println("response :: " + response.getBody().asString());
 				assertEquals(slots, 4);
 			} else {
-				match = (slots == 4) ? true : match;
+				match = (slots == 4) ? true : false;
 				System.out.println(
 						"Match Not Found, got back Slots = " + slots + " .Waiting for 2 sec. Attempt :: " + counter);
 				Thread.sleep(2000);
