@@ -1,14 +1,21 @@
 
 import static org.testng.Assert.*;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.codehaus.plexus.util.StringUtils;
 import org.json.JSONObject;
 import org.testng.Assert;
@@ -20,6 +27,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import com.aventstack.extentreports.ExtentReports;
 import Utils.ExtentManager;
+import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberFeatureWrapper;
 import io.cucumber.testng.CucumberOptions;
@@ -38,77 +46,42 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 	public void CreateExtentReports() throws IOException, InterruptedException, URISyntaxException {
 
 		// Execute DockerUp.bat to bring up containers
-		Runtime.getRuntime().exec("cmd /w /c start dockerUp.bat", null, new File(System.getProperty("user.dir")));
-		System.out.println("Executed dockerUp.bat");
-
-		// Check if output file exists or not
-		File oFile = new File(System.getProperty("user.dir") + "//output.txt");
-		int counter = 0;
-		while (!oFile.exists() && counter++ < 10) {
-			System.out.println("Waiting for output.txt");
-			if (counter == 10) {
-				System.out.println("output.txt did not get generated. Aborting!");
-				Assert.fail();
-			} else
-				Thread.sleep(3000);
-		}
-		System.out.println("Got output.txt");
-		Thread.sleep(3000);
-
-		boolean match = false;
-		counter = 0;
-		String dockerPublicIP = "";
-
-		while (match != true && counter++ < 30) {
-			try (BufferedReader bufReader = new BufferedReader(
-					new FileReader(System.getProperty("user.dir") + "//output.txt"))) {
-				System.out.println("Waiting to find an IP match in output.txt");
-				dockerPublicIP = bufReader.readLine();
-				System.out.println("Read output.txt.");
-				match = StringUtils.isNotBlank(dockerPublicIP) ? dockerPublicIP.matches("[0-9]+.[0-9]+.[0-9]+.[0-9]+")
-						: false;
-				System.out.println("Match Not Found. Waiting for 2 sec. Attempt :: " + counter);
-				Thread.sleep(2000);
-			}
-		}
-		assertTrue(match);
-		System.out.println("Match Found for IP address in output.txt!!");
-
-		// Reset counters and match to wait for another text
-		match = false;
-		counter = 0;
-		while (match != true && counter++ < 60) {
-			StringBuilder buffer = new StringBuilder();
-			try (BufferedReader bufReader = new BufferedReader(
-					new FileReader(System.getProperty("user.dir") + "//output.txt"))) {
-				System.out.println("Waiting for Hub and node containers to be up");
-				String line = null;
-				while ((line = bufReader.readLine()) != null) {
-					buffer.append(line);
+		String dockerPublicIp = "";
+		Process dockerUp = Runtime.getRuntime().exec("dockerUp.bat", null, new File(System.getProperty("user.dir")));
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter("output.txt"))) {
+			System.out.println("Buffered Writer excuted");
+			try (BufferedReader br = new BufferedReader(new InputStreamReader(dockerUp.getInputStream()))) {
+				System.out.println("Buffered Reader excuted");
+				String line;
+				while ((line = br.readLine()) != null) {
+					bw.write(line + "\n");
+					System.out.println(line);
+					boolean match = StringUtils.isNotBlank(line) ? line.matches("[0-9]+.[0-9]+.[0-9]+.[0-9]+") : false;
+					if (match) {
+						dockerPublicIp = line;
+						System.out.println("Match Found for IP address!!");
+					}
+					if (line.toLowerCase().contains("registered a node")) {
+						System.out.println("Selenium Grid is up and Running!!");
+						break;
+					}
 				}
-				match = StringUtils.isNotBlank(buffer.toString()) ? buffer.toString().contains("Registered a node")
-						: false;
-				System.out.println("Match Not Found, Waiting for 2 sec. Attempt :: " + counter);
-				if (counter == 60) {
-					System.out.println("Contents of Output File: ");
-					System.out.println(buffer);
-				} else
-					Thread.sleep(5000);
 			}
+			bw.flush();
+			System.out.println("Buffered Writer flushed");
 		}
-		assertTrue(match);
-		System.out.println("Selenium Grid is up and Running!!");
-
-		// Reset counters and match to wait for another text
-		match = false;
-		counter = 0;
+	
+		boolean match = false;
+		int counter = 0;
 		// Execute Docker scale to increase Nodes
-		Runtime.getRuntime().exec("cmd /w /c start dockerScale.bat", null, new File(System.getProperty("user.dir")));
-		System.out.println("Executed dockerScale.bat");
+		Process dockerScale = Runtime.getRuntime().exec("dockerScale.bat", null,
+				new File(System.getProperty("user.dir")));
+		dockerScale.waitFor(Long.parseLong("30"), java.util.concurrent.TimeUnit.SECONDS);
+
 		// Wait for Node Counts to match expected count
 		// Call the API - http://<dockerPublicIP>:4444/grid/api/hub
 		while (match != true && counter++ < 30) {
-			Response response = RestAssured.given().get(new URI("http://" + dockerPublicIP + ":4444/grid/api/hub"));
+			Response response = RestAssured.given().get(new URI("http://" + dockerPublicIp + ":4444/grid/api/hub"));
 			JSONObject jObj = new JSONObject(response.getBody().asString());
 			int slots = jObj.getJSONObject("slotCounts").getInt("total");
 			// Verify Slots matched the expected count
@@ -159,13 +132,12 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 			eReport.flush();
 
 		// Execute dockerDown bat to shut down all containers
-		Runtime.getRuntime().exec("cmd /c start dockerDown.bat", null, new File(System.getProperty("user.dir")));
+		Runtime.getRuntime().exec("dockerDown.bat", null, new File(System.getProperty("user.dir")));
 		Thread.sleep(5000);
-		System.out.println("Executed dockerDown.bat");
 
 		// Kill cmd
-		Runtime.getRuntime().exec("taskkill /f /im cmd.exe");
-		System.out.println("Closed cmd");
+		// Runtime.getRuntime().exec("taskkill /f /im cmd.exe");
+		// System.out.println("Closed cmd");
 
 		// Delete output file if it exists
 		File f = new File(System.getProperty("user.dir") + "//output.txt");
