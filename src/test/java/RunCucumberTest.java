@@ -49,9 +49,9 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 		String dockerPublicIp = "";
 		Process dockerUp = Runtime.getRuntime().exec("dockerUp.bat", null, new File(System.getProperty("user.dir")));
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter("output.txt"))) {
-			System.out.println("Buffered Writer excuted");
+			System.out.println("Buffered Writer instantiated");
 			try (BufferedReader br = new BufferedReader(new InputStreamReader(dockerUp.getInputStream()))) {
-				System.out.println("Buffered Reader excuted");
+				System.out.println("Buffered Reader instantiated");
 				String line;
 				while ((line = br.readLine()) != null) {
 					bw.write(line + "\n");
