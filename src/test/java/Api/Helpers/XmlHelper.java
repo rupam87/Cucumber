@@ -71,7 +71,7 @@ public class XmlHelper {
 		XPathExpression expr = CreateXExpr(xpathForNodeToFind);
 
 		NodeList nodes = (NodeList) expr.evaluate(xDom, XPathConstants.NODESET);
-
+		
 		for (int i = 0; i < nodes.getLength(); i++) {
 			System.out.println("Printing node txt content for finding " + nodes.item(i).getTextContent());
 			values.add(nodes.item(i).getTextContent());

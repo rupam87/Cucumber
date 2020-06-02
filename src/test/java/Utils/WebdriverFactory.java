@@ -65,7 +65,7 @@ public class WebdriverFactory implements IWebdriverFactory {
 			//ccaps.setJavascriptEnabled(true);
 			ccaps.setBrowserName("chrome");
 			ccaps.setPlatform(Platform.LINUX); // Since the node is a Linux node inside docker container
-			ccaps.setVersion("81.0.4044.92"); // MUST specify exact version
+			ccaps.setVersion("83.0.4103.61"); // MUST specify exact version
 			driver = new RemoteWebDriver(huburl,ccaps);			
 			this.scenarioContext.GetExtentTest().info("Created Remote Chrome Driver");
 			break;

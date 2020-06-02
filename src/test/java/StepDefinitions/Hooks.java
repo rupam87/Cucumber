@@ -52,7 +52,7 @@ public class Hooks {
 		/*try (BufferedReader bufReader = new BufferedReader(
 				new FileReader(System.getProperty("user.dir") + "//output.txt"))) {
 			System.out.println("Waiting to find an IP match in output.txt");*/
-			String dockerPublicIP = "192.168.99.101"; //bufReader.readLine();
+			String dockerPublicIP = "192.168.99.106"; //bufReader.readLine();
 			this.scenarioContext.SetValueToStore(dockerPublicIP);
 			System.out.println("INSIDE BEFORE HOOKS!! Scenario name :" + scenario.getName());
 		//}
@@ -77,6 +77,7 @@ public class Hooks {
 	public void afterStepHooks(Scenario scenario) throws Exception {
 
 		// Check if there are any errors
+		this.test.info("INSIDE AFTER STEP HOOKS!! Step Error Count :" + this.scenarioContext.getStepErrorCount());
 		if (this.scenarioContext.getStepErrorCount() > 0) {
 
 			// Check if it is a @UI tagged test, if yes, attach screenshot with

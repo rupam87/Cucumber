@@ -1,5 +1,7 @@
 package StepDefinitions;
 
+import org.openqa.selenium.WebDriver;
+
 import Utils.DIContext;
 import io.cucumber.java8.En;
 import io.cucumber.java.en.Given;
@@ -8,9 +10,11 @@ import io.cucumber.java.en.Then;
 
 public class UiSteps implements En {
 	DIContext scenarioContext;
+	WebDriver driver;
 
 	public UiSteps(DIContext context) {
 		scenarioContext = context;
+		driver = scenarioContext.GetWebDriver();
 		/*
 		 * Given("I navigate to {string}", (String url) -> { try {
 		 * scenarioContext.GetWebDriver().get(url);
@@ -23,7 +27,7 @@ public class UiSteps implements En {
 	@Given("I navigate to {string}")
 	public void given1(String url) {
 		try {
-			scenarioContext.GetWebDriver().get(url);
+			driver.get(url);
 			scenarioContext.GetExtentTest().info("naviagted to " + url);
 			scenarioContext.GetExtentTest().pass("I navigate to {string}");
 		} catch (Exception e) {
