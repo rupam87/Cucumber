@@ -49,6 +49,7 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 		String dockerPublicIp = "192.168.99.106";
 		Process dockerUp = Runtime.getRuntime().exec("cmd /c start dockerUp.bat", null, new File(System.getProperty("user.dir")));
 		Thread.sleep(60000);
+		System.out.println("Executed DockerUp bat");
 		/*
 		 * try (BufferedWriter bw = new BufferedWriter(new FileWriter("output.txt"))) {
 		 * System.out.println("Buffered Writer instantiated"); try (BufferedReader br =
@@ -133,6 +134,7 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 		// Execute dockerDown bat to shut down all containers
 		Process p = Runtime.getRuntime().exec("cmd /c start dockerDown.bat", null, new File(System.getProperty("user.dir")));
 		Thread.sleep(20000);
+		System.out.println("Executed Dockerdown bat");
 		/*
 		 * p.waitFor(Long.parseLong("5"), TimeUnit.SECONDS); try (BufferedReader br =
 		 * new BufferedReader(new InputStreamReader(p.getInputStream()))) { String line
