@@ -1,0 +1,36 @@
+pipeline {
+  
+   agent{ label 'Master-Docker' }
+   environment {
+       M2_HOME= "C:\\apache-maven-3.6.3-bin\\apache-maven-3.6.3"
+       PATH = '${PATH}' + ";${M2_HOME}\\bin;C:\\Windows\\System32"
+   }
+   stages 
+   {
+       stage('Checkout')
+       {
+           steps
+           {
+               // Get some code from a GitHub repository
+            git branch: 'dockerized', changelog: false, poll: false, url: 'https://github.com/rupam87/Cucumber.git'
+           }
+       }
+       
+      stage('Build') {
+         steps 
+         {
+            // set the path for Maven and cmd.  Then run mvn test
+            bat label: '', script: '''mvn test -Dcucumber.options="--tags %TAGS%"'''
+         }
+
+         post 
+         {
+            // Archieve artifacts and publish TestNG results
+            success {
+               archiveArtifacts '**/test-output/**/*.*'
+               step([$class: 'Publisher'])
+            }
+         }
+      }
+   }
+}
