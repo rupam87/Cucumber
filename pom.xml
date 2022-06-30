@@ -42,7 +42,7 @@
       	<plugin>
       		<groupId>net.masterthought</groupId>
 		    <artifactId>maven-cucumber-reporting</artifactId>
-		    <version>5.0.0</version>
+		    <version>5.7.0</version>
 		    <executions>
 		    	<execution>
 		    		<id>execution</id>
@@ -58,7 +58,6 @@
                                 <param>**/*.json</param>
                             </jsonFiles>
 		    			<outputDirectory>test-output/cucumber-reports</outputDirectory>
-		    			<cucumberOutput>test-output/jsonReports/CucumberTestReport.json</cucumberOutput>		    			
 		    		</configuration>
 		    	</execution>
 		    </executions>
@@ -158,21 +157,28 @@
 	<dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>json-path</artifactId>
-      <version>4.2.0</version>
+      <version>5.1.1</version>
       <scope>test</scope>
 	</dependency>
-	
+
+	  <dependency>
+		  <groupId>io.rest-assured</groupId>
+		  <artifactId>json-schema-validator</artifactId>
+		  <version>5.1.1</version>
+		  <scope>test</scope>
+	  </dependency>
+
 	<dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>xml-path</artifactId>
-      <version>4.2.0</version>
+      <version>5.1.1</version>
       <scope>test</scope>
 	</dependency>
 	
 	<dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
-      <version>4.2.0</version>
+      <version>5.1.1</version>
       <scope>test</scope>
 	</dependency>
 	
