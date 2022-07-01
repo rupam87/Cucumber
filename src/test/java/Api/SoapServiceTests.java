@@ -37,8 +37,9 @@ public class SoapServiceTests {
         namespaces.put("soap", "http://schemas.xmlsoap.org/soap/envelope/");
         namespaces.put("m", "http://www.oorsprong.org/websamples.countryinfo");
 
-        Map<String, String> authhdrs = new HashMap<String, String>();
-        authhdrs.put("SOAPAction", "FullCountryInfoAllCountries");
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("SOAPAction", "FullCountryInfoAllCountries");
+        headers.put("Content-Type", "application/soap+xml; charset=UTF-8;");
 
         String bodyXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
                 "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
@@ -52,8 +53,7 @@ public class SoapServiceTests {
                         .xmlConfig(XmlConfig.xmlConfig()
                                 .namespaceAware(true)
                                 .declareNamespaces(namespaces)))
-                .headers(authhdrs)
-                .contentType("application/soap+xml; charset=UTF-8;")
+                .headers(headers)
                 .body(bodyXml)
                 .when()
                 .post("/websamples.countryinfo/CountryInfoService.wso")
