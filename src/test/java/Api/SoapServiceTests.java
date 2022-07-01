@@ -37,9 +37,7 @@ public class SoapServiceTests {
         namespaces.put("soap", "http://schemas.xmlsoap.org/soap/envelope/");
         namespaces.put("m", "http://www.oorsprong.org/websamples.countryinfo");
 
-        Map<String, String> headers = new HashMap<String, String>();
-        headers.put("SOAPAction", "FullCountryInfoAllCountries");
-        headers.put("Content-Type", "application/soap+xml; charset=UTF-8;");
+        requestHeaders.put("SOAPAction", "FullCountryInfoAllCountries");
 
         String bodyXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
                 "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
@@ -53,7 +51,7 @@ public class SoapServiceTests {
                         .xmlConfig(XmlConfig.xmlConfig()
                                 .namespaceAware(true)
                                 .declareNamespaces(namespaces)))
-                .headers(headers)
+                .headers(requestHeaders)
                 .body(bodyXml)
                 .when()
                 .post("/websamples.countryinfo/CountryInfoService.wso")
@@ -65,6 +63,8 @@ public class SoapServiceTests {
         List<Node> countryInfoList = xpath.getList("Envelope.Body.FullCountryInfoAllCountriesResponse.FullCountryInfoAllCountriesResult.tCountryInfo", Node.class);
 
         Map<String, String> langCodes = new HashMap();
+        List <String> currCodes = new ArrayList<>();
+
         for (Node map : countryInfoList) {
             if (StringUtils.equalsIgnoreCase("in", map.children().get("sISOCode").toString())) {
                 System.out.println("Capital City: " + map.children().get("sCapitalCity").toString());
@@ -73,11 +73,44 @@ public class SoapServiceTests {
             map.children().getNode("Languages").getNodes("tLanguage").forEach(lang -> {
                 langCodes.put(lang.children().get("sISOCode").toString(), lang.children().get("sName").toString());
             });
+
+            currCodes.add( map.children().getNode("sCurrencyISOCode").value());
         }
 
         langCodes.entrySet().forEach(entry -> {
             System.out.println(entry.getKey() + " :: " + entry.getValue());
         });
 
+        String getCurRequest = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+                "  <soap:Body>\n" +
+                "    <CurrencyName xmlns=\"http://www.oorsprong.org/websamples.countryinfo\">\n" +
+                "      <sCurrencyISOCode>{code}</sCurrencyISOCode>\n" +
+                "    </CurrencyName>\n" +
+                "  </soap:Body>\n" +
+                "</soap:Envelope>";
+
+        // Orchestration on language Get call
+        currCodes.forEach(curCode -> {
+            if(curCode != null) {
+                // Invoke new request for getting curr names by code
+                String getRequest = getCurRequest.replace("{code}", curCode);
+                Response getCurResp = given().config(RestAssuredConfig
+                                .config()
+                                .xmlConfig(XmlConfig.xmlConfig().namespaceAware(true)
+                                        .declareNamespaces(namespaces)))
+                        .headers(requestHeaders)
+                        .body(getRequest)
+                        .when()
+                        .post("/websamples.countryinfo/CountryInfoService.wso")
+                        .then()
+                        .statusCode(200)
+                        .extract()
+                        .response();
+
+                String curName = getCurResp.xmlPath().get("Envelope.Body.CurrencyNameResponse.CurrencyNameResult");
+                System.out.println(curCode + " :: " + curName);
+            }
+        });
     }
 }
