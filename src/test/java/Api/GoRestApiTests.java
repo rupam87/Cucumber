@@ -22,14 +22,14 @@ public class GoRestApiTests {
 
     String useridCreated;
 
-    @BeforeTest
+    @BeforeTest (alwaysRun = true)
     public void setup() {
         RestAssured.baseURI = baseUrl;
         requestHeaders.put("Authorization", bearerToken);
         requestHeaders.put("Content-type", "application/json");
     }
 
-    @Test
+    @Test (priority = 2, groups = {"rest"})
     public Response getUsers() {
         Response response = given().headers(requestHeaders)
                 .when()
@@ -45,7 +45,7 @@ public class GoRestApiTests {
         return response;
     }
 
-    @Test
+    @Test (priority = 1, groups = {"rest"})
     public void postUser() {
         JSONObject requestParams = new JSONObject();
         requestParams.put("email", java.util.UUID.randomUUID().toString() + "@ww.com");

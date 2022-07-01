@@ -5,5 +5,26 @@
     <classes>
       <class name="RunCucumberTest"> </class>
     </classes>
-  </test> <!-- APITest -->
+  </test>
+  <!-- APITest -->
+  <test verbose="2" preserve-order="true" name="SoapTests">
+    <groups>
+      <run>
+        <include name = "soap"/>
+      </run>
+    </groups>
+    <classes>
+      <class name="Api.SoapServiceTests"/>
+    </classes>
+  </test>
+  <test verbose="2" preserve-order="true" name="RestTests">
+    <groups>
+      <run>
+        <include name = "rest"/>
+      </run>
+    </groups>
+    <classes>
+      <class name="Api.GoRestApiTests"/>
+    </classes>
+  </test>
 </suite> <!-- APITestProjectSuite -->

@@ -25,13 +25,14 @@ public class SoapServiceTests {
     String baseUrl = "http://webservices.oorsprong.org";
     Map<String, String> requestHeaders = new HashMap<>();
 
-    @BeforeTest
+    @BeforeTest(alwaysRun = true)
     public void setup() {
+        System.out.println("-------------------Inside Setup---------------------------");
         baseURI = baseUrl;
         requestHeaders.put("Content-Type", "text/xml; charset=utf-8");
     }
 
-    @Test
+    @Test (priority = 1, groups = {"soap"})
     public void getFullCountryInfo() {
         Map<String, String> namespaces = new HashMap<>();
         namespaces.put("soap", "http://schemas.xmlsoap.org/soap/envelope/");
