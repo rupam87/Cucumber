@@ -230,19 +230,35 @@
 	    <groupId>net.masterthought</groupId>
 	    <artifactId>maven-cucumber-reporting</artifactId>
 	    <version>5.0.0</version>
-	</dependency>	
-	
-	<dependency>
-	    <groupId>com.aventstack</groupId>
-	    <artifactId>extentreports</artifactId>
-	    <version>4.1.5</version>
 	</dependency>
-	
-	<dependency>
+
+	  <!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
+	  <dependency>
+		  <groupId>com.aventstack</groupId>
+		  <artifactId>extentreports</artifactId>
+		  <version>5.0.9</version>
+	  </dependency>
+
+
+	  <dependency>
 	    <groupId>org.seleniumhq.selenium</groupId>
 	    <artifactId>selenium-java</artifactId>
 	    <version>3.141.59</version>
-	</dependency>		
-		
+	</dependency>
+
+	  <dependency>
+		  <groupId>io.github.sridharbandi</groupId>
+		  <artifactId>java-a11y</artifactId>
+		  <version>3.0.0</version>
+	  </dependency>
+
+	  <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
+	  <dependency>
+		  <groupId>io.github.bonigarcia</groupId>
+		  <artifactId>webdrivermanager</artifactId>
+		  <version>5.2.1</version>
+	  </dependency>
+
+
   </dependencies>
 </project>

@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
 
+import com.aventstack.extentreports.Status;
+import io.github.sridharbandi.AxeRunner;
+import io.github.sridharbandi.HtmlCsRunner;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -20,6 +23,7 @@ import io.cucumber.core.api.Scenario;
 import io.cucumber.java.After;
 import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
+import org.openqa.selenium.WebDriver;
 
 public class Hooks {
 
@@ -57,12 +61,18 @@ public class Hooks {
 		System.out.println("Extent Test Object stored in Scenario context!");
 		try {
 			driverFactory = new WebdriverFactory(this.scenarioContext);
-			driverFactory.GetDriver();
+			WebDriver driver = driverFactory.GetDriver();
+			// Set the html cs runner for AY11  ADA testing
+			HtmlCsRunner htmlCsRunner = new HtmlCsRunner(driver);
+			this.scenarioContext.setHtmlCsRunner(htmlCsRunner);
+			AxeRunner axeRunner = new AxeRunner(driver);
+			this.scenarioContext.setAxeRunner(axeRunner);
+
 		} catch (FileNotFoundException e) {
-			this.test.error("Exception caught from WebdriverFactory!" + e.getMessage());
+			this.test.log( Status.FAIL, "Exception caught from WebdriverFactory!" + e.getMessage());
 			throw e;
 		} catch (IOException e) {
-			this.test.error("Exception caught from WebdriverFactory!" + e.getMessage());
+			this.test.log(Status.FAIL,"Exception caught from WebdriverFactory!" + e.getMessage());
 			throw e;
 		}
 
@@ -73,21 +83,6 @@ public class Hooks {
 
 		this.test.info("INSIDE BEFORE UI HOOKS!! Scenario name :" + scenario.getName());
 	}
-
-	/*@BeforeStep
-	public void beforeStepHooks(Scenario scenario) throws Exception {
-		// You need to filter out before/after hooks
-		List<PickleStepTestStep> StepDefinitions = cukesTestCase.getTestSteps().stream()
-				.filter(x -> x instanceof PickleStepTestStep).map(x -> (PickleStepTestStep) x)
-				.collect(Collectors.toList());
-
-		// This object now holds the information about the current step
-		// definition
-		PickleStepTestStep currentStepDef = StepDefinitions.get(currentStepDefIndex);
-
-		this.scenarioContext.SetStepDefInfo(currentStepDef);
-		System.out.println("INSIDE BEFORE STEP HOOKS!! Scenario name :" + scenario.getName());
-	}*/
 
 	@AfterStep
 	public void afterStepHooks(Scenario scenario) throws Exception {
@@ -109,22 +104,24 @@ public class Hooks {
 			} 
 
 			// rethrow the exception to terminate scenario execution
-			throw this.scenarioContext.getStepError();
+			//throw this.scenarioContext.getStepError();
 		} 
 		
 		this.test.info("INSIDE AFTER STEP HOOKS!! Scenario name :" + scenario.getName());
 	}
 
-	@After("@UI")
+	@After(value = "@UI", order = 1)
 	public void afterUIHooks(Scenario scenario) {
+		try {
+			this.scenarioContext.getHtmlCsRunner().generateHtmlReport();
+			this.scenarioContext.getAxeRunner().generateHtmlReport();
+		}catch (Throwable t) {
+			this.test.log(Status.FAIL,"Exception while generating ADA report htmls :" + t.getMessage());
+		}
 		driverFactory.DisposeDriver();
-		this.test.info("INSIDE AFTER UI HOOKS!! Scenario name :" + scenario.getName());
-	}
-
-	@After
-	public void afterHooks(Scenario scenario) {
-		
-		this.test.info("INSIDE AFTER HOOKS NOW!!  Scenario name: " + scenario.getName());
+		this.test.log(Status.INFO, "INSIDE AFTER UI HOOKS!! Scenario name :" + scenario.getName());
+		ExtentManager.ExtentReportsInstance().flush();
+		System.out.println("Flushed Reports");
 	}
 
 }

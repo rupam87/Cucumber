@@ -2,6 +2,8 @@ package Utils;
 
 import java.util.HashMap;
 
+import io.github.sridharbandi.AxeRunner;
+import io.github.sridharbandi.HtmlCsRunner;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
@@ -25,6 +27,8 @@ public class DIContext {
 	private WebDriver driver = null;
 	private int stepErrorCount = 0;
 	private Exception stepError = null;
+	private HtmlCsRunner htmlCsRunner = null;
+	private AxeRunner axeRunner = null;
 
 	public DIContext() {
 		username = "abc";
@@ -39,6 +43,22 @@ public class DIContext {
 			creds.put(username, password);
 		}
 		return creds;
+	}
+
+	public HtmlCsRunner getHtmlCsRunner(){
+		return htmlCsRunner;
+	}
+
+	public void setHtmlCsRunner(HtmlCsRunner runner){
+		htmlCsRunner = runner;
+	}
+
+	public AxeRunner getAxeRunner(){
+		return axeRunner;
+	}
+
+	public void setAxeRunner(AxeRunner runner){
+		axeRunner = runner;
 	}
 
 	public Response GetResponse() {

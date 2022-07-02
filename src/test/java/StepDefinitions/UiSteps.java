@@ -1,6 +1,8 @@
 package StepDefinitions;
 
 import Utils.DIContext;
+import com.aventstack.extentreports.Status;
+import io.cucumber.java.en.And;
 import io.cucumber.java8.En;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -24,8 +26,7 @@ public class UiSteps implements En {
 	public void given1(String url) {
 		try {
 			scenarioContext.GetWebDriver().get(url);
-			scenarioContext.GetExtentTest().info("naviagted to " + url);
-			scenarioContext.GetExtentTest().pass("I navigate to {string}");
+			scenarioContext.GetExtentTest().info("navigated to " + url);
 		} catch (Exception e) {
 			this.scenarioContext.IncrementStepErrorCount(e);
 		}
@@ -34,8 +35,9 @@ public class UiSteps implements En {
 	@When("I click on {string} button")
 	public void IClickOnButton(String button) {
 		try {
-			this.scenarioContext.GetExtentTest().debug("This is dummy step");
-			scenarioContext.GetExtentTest().pass("I click on {string} button");
+			this.scenarioContext.GetExtentTest().log(Status.INFO,"This is dummy step");
+			scenarioContext.GetExtentTest().pass("I click on " + button + " button");
+			Thread.sleep(2000);
 		} catch (Exception e) {
 			this.scenarioContext.IncrementStepErrorCount(e);
 		}
@@ -44,7 +46,7 @@ public class UiSteps implements En {
 	@Then("I should be on {string}")
 	public void IShouldBeOn(String string){
 		try {
-			this.scenarioContext.GetExtentTest().debug("This is dummy step throwing exception");
+			this.scenarioContext.GetExtentTest().log(Status.INFO,"This is dummy step throwing exception");
 			throw new Exception("Dummy Exception");
 		} catch (Exception e) {
 			this.scenarioContext.IncrementStepErrorCount(e);
@@ -54,10 +56,16 @@ public class UiSteps implements En {
 	@Then("I should be at {string}")
 	public void IShouldBeAt(String string){
 		try {
-			this.scenarioContext.GetExtentTest().debug("This is dummy step");
+			this.scenarioContext.GetExtentTest().log(Status.INFO,"This is dummy step");
 			scenarioContext.GetExtentTest().pass("I should be at {string}");
 		} catch (Exception e) {
 			this.scenarioContext.IncrementStepErrorCount(e);
 		}
+	}
+
+	@And("I perform ADA testing on the page")
+	public void iPerformADATestingOnThePage() throws Exception {
+		this.scenarioContext.getAxeRunner().execute();
+		this.scenarioContext.getHtmlCsRunner().execute();
 	}
 }
