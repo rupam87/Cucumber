@@ -19,7 +19,7 @@ import io.cucumber.testng.PickleEventWrapper;
 //@RunWith(Cucumber.class)
 @CucumberOptions(plugin = { "pretty", "html:target/cucumber",
 		"json:test-output/jsonReports/CucumberTestReport.json", "Utils.CustomEventListenerPlugin" }, features = "src/test/resources", glue = {
-				"StepDefinitions" }, tags = { "@ADA" })
+				"StepDefinitions" }, tags = { "@UI" })
 public class RunCucumberTest extends AbstractTestNGCucumberTests {
 
 	ExtentReports eReport = null;

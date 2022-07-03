@@ -9,26 +9,32 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.gherkin.model.Given;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import com.aventstack.extentreports.reporter.configuration.Theme;
 import cucumber.api.HookTestStep;
 import cucumber.api.event.*;
 import org.apache.commons.io.FileUtils;
-import org.joda.time.DateTime;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import cucumber.api.PickleStepTestStep;
-import cucumber.runtime.CucumberException;
-import org.openqa.selenium.WebDriver;
 
 public class CustomEventListenerPlugin implements ConcurrentEventListener {
 
     private ExtentSparkReporter spark;
-    private ExtentReports extent;
-    Map<String, ExtentTest> feature = new HashMap<String, ExtentTest>();
-    ExtentTest scenario;
-    ExtentTest step;
+    private ExtentReports featureExtent;
+
+    private ExtentReports scenarioExtent;
+
+    private Map<String, ExtentReports> scenarioExtentReportList = new HashMap<String, ExtentReports>();
+
+    Map<String, ExtentTest> featureTestList = new HashMap<String, ExtentTest>();
+
+    Map<String, ExtentTest> scenarioTestList = new HashMap<String, ExtentTest>();
+
+    ExtentTest scenarioTest;
+    ExtentTest stepTest_FeatureReport;
+
+    ExtentTest stepTest_ScenarioReport;
 
     DIContext scenarioContext;
 
@@ -50,8 +56,9 @@ public class CustomEventListenerPlugin implements ConcurrentEventListener {
     public void setEventPublisher(EventPublisher publisher) {
         publisher.registerHandlerFor(TestRunStarted.class, this::runStarted);
         publisher.registerHandlerFor(TestRunFinished.class, this::runFinished);
-        publisher.registerHandlerFor(TestSourceRead.class, this::featureRead);
+        //publisher.registerHandlerFor(TestSourceRead.class, this::featureRead);
         publisher.registerHandlerFor(TestCaseStarted.class, this::ScenarioStarted);
+        publisher.registerHandlerFor( TestCaseFinished.class, this::ScenarioFinished);
         publisher.registerHandlerFor(TestStepStarted.class, this::stepStarted);
         publisher.registerHandlerFor(TestStepFinished.class, this::stepFinished);
     }
@@ -63,10 +70,10 @@ public class CustomEventListenerPlugin implements ConcurrentEventListener {
      */
     // Here we create the reporter
     private void runStarted(TestRunStarted event) {
-        extent =  new ExtentReports();
+        featureExtent =  new ExtentReports();
         spark = new ExtentSparkReporter("test-output/AventReport/ExtentReportResults.html");
         spark.config().setReportName("My Reports");
-        extent.attachReporter(spark);
+        featureExtent.attachReporter(spark);
     }
 
     /**
@@ -75,7 +82,7 @@ public class CustomEventListenerPlugin implements ConcurrentEventListener {
      * @param event
      */
     private void runFinished(TestRunFinished event) {
-        extent.flush();
+        featureExtent.flush();
     }
 
     /**
@@ -86,8 +93,8 @@ public class CustomEventListenerPlugin implements ConcurrentEventListener {
     private void featureRead(TestSourceRead event) {
         String featureSource = event.uri;
         String featureName = featureSource.split(".*/")[1];
-        if (feature.get(featureSource) == null) {
-            feature.putIfAbsent(featureSource, extent.createTest(featureName));
+        if (featureTestList.get(featureSource) == null) {
+            featureTestList.putIfAbsent(featureSource, featureExtent.createTest(featureName));
         }
     }
 
@@ -97,8 +104,31 @@ public class CustomEventListenerPlugin implements ConcurrentEventListener {
      * @param event
      */
     private void ScenarioStarted(TestCaseStarted event) {
+        String scenarioName = event.getTestCase().getName();
+
+        // Create Extent Report for Each Scenario
+        scenarioExtent =  new ExtentReports();
+        spark = new ExtentSparkReporter("test-output/AventReport/ScenarioReports/"+ scenarioName.replaceAll("[// ,//s, :]","_") + ".html");
+        spark.config().setReportName("My Reports");
+        scenarioExtent.attachReporter(spark);
+        scenarioTestList.putIfAbsent(scenarioName, scenarioExtent.createTest(scenarioName));
+        scenarioExtentReportList.putIfAbsent(scenarioName, scenarioExtent);
+
+        // create Node in the Feature Level Parent Reporter
         String featureName = event.getTestCase().getUri().toString();
-        scenario = feature.get(featureName).createNode(event.getTestCase().getName());
+        if (featureTestList.get(featureName) == null) {
+            featureTestList.putIfAbsent(featureName, featureExtent.createTest(featureName));
+        }
+        scenarioTest = featureTestList.get(featureName).createNode(scenarioName);
+    }
+
+    /**
+     * Flush the Scenario Level Extent Report
+     * @param event
+     */
+    private void ScenarioFinished(TestCaseFinished event) {
+        String scenarioName = event.getTestCase().getName();
+        scenarioExtentReportList.get(scenarioName).flush();
     }
 
     /**
@@ -121,7 +151,8 @@ public class CustomEventListenerPlugin implements ConcurrentEventListener {
             HookTestStep hoo = (HookTestStep) event.testStep;
             stepName = keyword + " " + hoo.getHookType().name();
         }
-        step = scenario.createNode(Given.class, stepName);
+        stepTest_FeatureReport = scenarioTest.createNode(Given.class, stepName);
+        stepTest_ScenarioReport = scenarioTestList.get(event.getTestCase().getName()).createNode(Given.class, stepName);
     }
 
     /**
@@ -132,9 +163,11 @@ public class CustomEventListenerPlugin implements ConcurrentEventListener {
     private void stepFinished(TestStepFinished event) {
 
         if (event.result.getStatus().toString() == "PASSED") {
-            step.log(Status.PASS, "Step passed");
+            stepTest_FeatureReport.log(Status.PASS, "Step passed");
+            stepTest_ScenarioReport.log(Status.PASS, "Step passed");
         } else if (event.result.getStatus().toString() == "SKIPPED") {
-            step.log(Status.SKIP, "Step was skipped ");
+            stepTest_FeatureReport.log(Status.SKIP, "Step was skipped ");
+            stepTest_ScenarioReport.log(Status.SKIP, "Step was skipped ");
         } else {
             try {
                 this.scenarioContext = Hooks.diContextThreadLocal.get();
@@ -145,9 +178,11 @@ public class CustomEventListenerPlugin implements ConcurrentEventListener {
                         + Calendar.getInstance().getTimeInMillis() + ".png";
                 File destFile = new File(fileAbsPath);
                 FileUtils.copyFile(source, destFile);
-                step.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(fileAbsPath).build());
+                stepTest_FeatureReport.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(fileAbsPath).build());
+                stepTest_ScenarioReport.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(fileAbsPath).build());
             } catch (Exception e) {
-                step.log(Status.FAIL, "Test Step Failed. Exception while getting screenshot: " + e.getMessage());
+                stepTest_FeatureReport.log(Status.FAIL, "Test Step Failed. Exception while getting screenshot: " + e.getMessage());
+                stepTest_ScenarioReport.log(Status.FAIL, "Test Step Failed. Exception while getting screenshot: " + e.getMessage());
             }
         }
     }
