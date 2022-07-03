@@ -19,7 +19,7 @@ import io.cucumber.testng.PickleEventWrapper;
 //@RunWith(Cucumber.class)
 @CucumberOptions(plugin = { "pretty", "html:target/cucumber",
 		"json:test-output/jsonReports/CucumberTestReport.json", "Utils.CustomEventListenerPlugin" }, features = "src/test/resources", glue = {
-				"StepDefinitions" }, tags = { "@UI" })
+				"StepDefinitions" }, tags = { "@ADA" })
 public class RunCucumberTest extends AbstractTestNGCucumberTests {
 
 	ExtentReports eReport = null;
@@ -36,11 +36,11 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 		super.setUpClass();
 	}
 
-	@Override
+	/*@Override
 	@Test(groups = "", description = "Runs Cucumber Scenarios", dataProvider = "scenarios")
 	public void runScenario(PickleEventWrapper pickleWrapper, CucumberFeatureWrapper featureWrapper) throws Throwable {
 		super.runScenario(pickleWrapper, featureWrapper);
-	}
+	}*/
 
 	@Override
 	@DataProvider(parallel = true)

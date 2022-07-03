@@ -67,5 +67,6 @@ public class UiSteps implements En {
 	public void iPerformADATestingOnThePage() throws Exception {
 		this.scenarioContext.getAxeRunner().execute();
 		this.scenarioContext.getHtmlCsRunner().execute();
+		throw new Exception("Sample Execp to test Listners");
 	}
 }
